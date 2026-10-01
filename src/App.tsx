@@ -139,7 +139,14 @@ export default function App() {
       <a className="brand" href="#" onClick={event => { event.preventDefault(); navigate('dashboard'); }}><span className="brand-symbol"><Sprout size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
       <div className="campus-label">KONKUK GLOCAL<span>컴퓨터공학과 졸업 플래너</span></div>
       <nav className="nav-items" aria-label="주 메뉴">{navItems.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} onClick={() => navigate(item.id)} aria-current={page === item.id ? 'page' : undefined}><item.icon size={19}/><span>{item.label}</span>{page === item.id && <span className="nav-dot"/>}</button>)}</nav>
-      <div className="sidebar-note"><Sprout size={22}/><strong>한 학기씩, 나의 속도로.</strong><p>작은 계획이 모여<br/>다음의 나를 만듭니다.</p></div>
+      <section className="sidebar-note sidebar-summary" aria-label="실시간 졸업 요약" aria-live="polite" aria-atomic="true">
+        <dl>
+          <div><dt>졸업까지 남은 총학점</dt><dd>{valid?.after.currentGraduation.total ? <>{valid.after.currentGraduation.total.missing}<small>학점</small></> : '확인 필요'}</dd></div>
+          <div><dt>앞으로 받아야 할 평균평점</dt><dd>{valid?.after.goal.requiredAverage != null ? valid.after.goal.requiredAverageDisplay : '—'}</dd></div>
+        </dl>
+        {valid?.after.goal.status === 'impossible' && <small className="error-text">현재 계획으로 목표 달성 불가</small>}
+        {(!valid || valid.after.goal.requiredAverage === null) && <small className="muted">{!valid ? '입력값 확인 필요' : valid.after.goal.reason}</small>}
+      </section>
       <div className="sidebar-bottom"><div className="local-status"><HardDrive size={16}/><span>{saved ? '이 브라우저에 저장됨' : state.saveEnabled ? '저장 상태 확인 필요' : '자동 저장 꺼짐'}<small>다른 기기와 동기화되지 않아요</small></span></div><button onClick={() => navigate('rules')} className="button subtle"><CircleHelp size={15}/>적용 기준과 출처 보기</button></div>
     </aside>
     <div className="main-shell">
