@@ -10,6 +10,8 @@ test('동일 학기 자료가 있는 가상 PDF는 확인 없이 자동 분류�
   await page.getByRole('button', { name: '나의 졸업 계획 시작' }).click();
   await page.getByLabel('성적표 PDF', { exact: true }).setInputFiles(resolve('tests/fixtures/transcript.pdf'));
   await expect(page.locator('.import-summary')).toContainText('추출 3과목');
+  await expect(page.getByLabel('가져올 현재 등록학기 수', { exact: true })).toHaveValue('3');
+  await page.getByLabel('가져올 현재 등록학기 수', { exact: true }).fill('4');
   const apply = page.getByRole('button', { name: '확인한 성적 반영', exact: true });
   await expect(page.getByRole('button', { name: '시간표 분류 후보 선택', exact: true })).toHaveCount(0);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -19,6 +21,7 @@ test('동일 학기 자료가 있는 가상 PDF는 확인 없이 자동 분류�
   await apply.click();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!));
   expect(saved.courses).toHaveLength(3);
+  expect(saved.academic.registeredSemesters).toBe(4);
   expect(saved.courses[0].categoryId).toBe('ge-advanced-science');
   expect(saved.courses[1].categoryId).toBe('ge-humanities');
   await page.getByLabel('목표 최종 평균평점', { exact: true }).fill('3.5');

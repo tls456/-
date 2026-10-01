@@ -77,13 +77,14 @@
     "dashboard": "Current remaining total credits, needed planned-course GPA, and missing requirement categories first; optional area choices are not all mandatory and overlapping credit requirements are not summed.",
     "initialFlow": "Student ID and curriculum confirmation -> PDF upload -> final target GPA -> dashboard. Existing nonempty plans are preserved.",
     "welcomeDemoShortcutRemoved": true,
+    "semesterBasedRegistrationDefault": { "method": "distinct regular semesters in uploaded PDF + 1", "applicationRounds": ["first", "second"], "explicitPdfCountTakesPriority": true, "seasonalSemestersExcluded": true, "editable": true, "unitTestsPassed": 207, "relatedBrowserTestsPassed": 5 },
     "liveSidebarSummary": { "fields": ["Remaining graduation credits", "Required future GPA"], "usesCurrentSimulationAfterDeletion": true, "updatesAcrossPagesAndPlanChanges": true, "mobileMenuChecked": true, "relatedBrowserTestsPassed": 8 },
     "planCreditOverview": { "format": "planned credits / remaining graduation credits", "remainingUsesCurrentCreditsAfterDeletion": true, "editedDemoPlan": "73/74", "relatedBrowserTestsPassed": 4 },
     "minimalDeletionComparison": { "visibleOnDashboard": true, "rows": ["Current average GPA", "Remaining graduation credits"], "relatedBrowserTestsPassed": 2, "earnedCourseDeletionChangesRemainingCredits": true, "failedCourseDeletionDoesNotChangeRemainingCredits": true, "mobileOverflowChecked": true },
     "restoredGpaRange": { "visibleOnDashboard": true, "minimumAndMaximumLabels": true, "targetMarker": true, "recalculatesAfterGradingChanges": true, "relatedBrowserTestsPassed": 3, "demoMinimum": "1.34", "demoMaximum": "3.94" },
     "automaticPlan": { "startTerm": "2026-2", "demoRemainingCredits": 74, "creditsPerSemester": [18, 18, 18, 18, 2], "initiallyAllGraded": true, "unclassifiedCoursesSatisfyAreaRequirements": false, "editableCourseClassificationAndGrading": true, "demoTargetGpa": 3.5, "demoRequiredAverageDisplay": "3.737" },
     "pendingUserDecisions": [],
-    "currentSafetyBehavior": "Absent PDF registration counts are never inferred; existing entries are retained or left blank for manual input. Dongcham automatic recognition applies across all semesters with exact code, kind, credits, grade, and recognition note."
+    "currentSafetyBehavior": "Explicit PDF registration counts take priority. Without a count, default to distinct regular semesters in the PDF plus one current semester in BOTH application rounds, as specified by the user, with an editable explanation. Dongcham automatic recognition applies across all semesters with exact code, kind, credits, grade, and recognition note."
   },
   "sourceData": {
     "curriculumRows": 225,
