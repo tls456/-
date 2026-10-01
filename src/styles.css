@@ -758,6 +758,48 @@ details li { color: #69775f; }
 .dashboard-simple details > div { margin-top: 18px; }
 @media (max-width: 640px) { .next-action-grid { grid-template-columns: 1fr; } .action-metric > strong { font-size: 30px; } }
 
+.courses-view { font-size: 15px; }
+.courses-view .page-intro h1 { font-size: 28px; }
+.courses-view .page-intro p,
+.courses-view .notice,
+.courses-view .button,
+.courses-view .empty-search { font-size: 13.5px; }
+.courses-view .empty-state p { font-size: 13px; }
+.courses-view .empty-state h3 { font-size: 16px; }
+.courses-view .deletion-strip > div > span { font-size: 11.5px; }
+.courses-view .deletion-strip strong { font-size: 26.5px; }
+.courses-view .deletion-strip strong small,
+.courses-view .deletion-strip > .button { font-size: 12.5px; }
+.courses-view .search-input { max-width: 440px; }
+.courses-view .search-input input:not([type="checkbox"]),
+.courses-view .table-filters select { font-size: 13.5px; }
+.courses-view .course-table { min-width: 1100px; }
+.courses-view .course-table th { font-size: 12.5px; }
+.courses-view .course-table td { font-size: 13px; }
+.courses-view .course-table td:nth-child(2) > strong { font-size: 13.5px; }
+.courses-view .course-table td > small,
+.courses-view .course-table .eligibility-reason,
+.courses-view .category-label,
+.courses-view .table-footer { font-size: 12px; }
+.courses-view .badge { font-size: 11.5px; }
+.courses-view .grade-pill { font-size: 13px; }
+@media (max-width: 1200px) {
+  .courses-view .deletion-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .courses-view .deletion-strip > .button { justify-self: start; }
+}
+@media (max-width: 640px) {
+  .courses-view { font-size: 14px; }
+  .courses-view .page-intro h1 { font-size: 23px; }
+  .courses-view .page-intro p { font-size: 12.5px; }
+  .courses-view .notice { font-size: 13px; }
+  .courses-view .search-input input:not([type="checkbox"]) { font-size: 14.5px; }
+  .courses-view .table-filters select { font-size: 14px; }
+  .courses-view .table-footer { font-size: 11px; }
+  .courses-view .deletion-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .courses-view .deletion-strip strong { font-size: 26px; }
+  .courses-view .deletion-strip > .button { justify-self: stretch; white-space: normal; }
+}
+
 /* Compact dashboard: four metrics above an equal-width summary. */
 .dashboard-simple .next-action-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .dashboard-simple .action-metric { align-content: start; gap: 16px; }

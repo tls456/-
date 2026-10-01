@@ -15,13 +15,13 @@ export function CoursesView({ courses, categories, result, selectedIds, onToggle
   const eligibility = new Map(result?.deletion.eligibility.map(item => [item.courseId, item]) ?? []);
   const visible = useMemo(() => courses.filter(course => `${course.name} ${course.courseCode ?? ''} ${course.semester}`.toLowerCase().includes(query.toLowerCase()) && (filter === 'all' || filter === 'selected' && selectedIds.includes(course.id) || filter === 'eligible' && eligibility.get(course.id)?.status === 'eligible')), [courses, query, filter, selectedIds, result]);
   const deletion = result?.deletion;
-  return <div className="stack">
+  return <div className="stack courses-view">
     <div className="page-intro"><div><h1>이수 과목과 삭제 시뮬레이션</h1><p>지나온 기록은 그대로 두고, 다른 가능성을 비교해 보세요.</p></div><div className="import-actions"><button className="button secondary" onClick={onImportPdf}><FileUp size={17}/>성적표 PDF 가져오기</button><button className="button primary" onClick={onAdd}><Plus size={17}/>과목 추가</button></div></div>
     {deletion && <div className="deletion-strip">
       <div><span>선택한 과목</span><strong>{selectedIds.length}<small>개</small></strong></div>
       <div><span>선택 과목 학점 수</span><strong>{deletion.selectedCourseCredits}</strong></div>
       <div><span>이번 한도 사용량</span><strong>{deletion.selectedChargeCredits}</strong></div>
-      <div><span>남은 삭제 한도</span><strong>{deletion.remainingCreditLimit ?? '확인 필요'}</strong></div>
+      <div><span>남은 삭제 한도 학점</span><strong>{deletion.remainingCreditLimit ?? '확인 필요'}</strong></div>
       <div><span>추가 선택 최대 (한도 사용량 기준)</span><strong>{deletion.additionalMaxCredits ?? '확인 필요'}</strong></div>
       <button className="button secondary" onClick={onClear} disabled={selectedIds.length === 0}><Undo2 size={16}/>선택 되돌리기</button>
     </div>}
