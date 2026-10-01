@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
-import { ArrowLeft, ArrowRight, GraduationCap, Sprout, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, GraduationCap, Check } from 'lucide-react';
+import bullMark from '../assets/konkuk-bull.png';
 import { ACADEMIC_YEARS, getCurriculumYear, getSecondaryCurriculumYear, type StudentAcademic } from '../data/academic';
 import { getDepartmentsForYear } from '../data/catalog';
 import { defaultAcademic } from '../state';
@@ -59,11 +60,10 @@ export function Onboarding({ onStart, onDemo, restoreError }: { onStart: (academ
     onStart(academic);
   }
   return <main className="welcome">
+    <div className="welcome-university">KONKUK UNIVERSITY</div>
     <div className="welcome-art">
-      <a className="brand" href="#"><span className="brand-symbol"><Sprout size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
-      <div className="welcome-message"><span className="eyebrow">YOUR NEXT CHAPTER</span><h1>목표는 선명하게,<br/>졸업은 가볍게.</h1><p>지나온 학기를 돌아보고,<br/>앞으로의 가능성을 계획해 보세요.</p></div>
-      <div className="journey-art" aria-hidden="true"><span className="journey-line"/><div className="journey-node one"><span>지금의 나</span><i>3.24</i></div><div className="journey-node two"><span>다음 학기</span><i>↗</i></div><div className="journey-node three"><GraduationCap size={36}/><span>목표에 한 걸음</span></div></div>
-      <div className="welcome-campus">KONKUK UNIVERSITY <span>GLOCAL CAMPUS</span></div>
+      <a className="brand" href="#"><span className="brand-symbol"><GraduationCap size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
+      <div className="welcome-bull" aria-hidden="true"><img src={bullMark} alt=""/></div>
     </div>
     <div className="welcome-form">
       <div className="welcome-form-inner">
