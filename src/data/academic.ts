@@ -105,6 +105,9 @@ export interface StudentAcademic {
   transferEntryGrade?: 2 | 3 | 4 | null;
   /** Current registered semester included; include semesters recognized on transfer. */
   registeredSemesters: number | null;
+  registeredSemestersEstimated?: boolean;
+  registrationSourceNote?: string;
+  baselineSourceNote?: string;
   enrollmentStatus: 'enrolled' | 'leave' | 'unknown';
   primaryDepartmentId: string;
   secondaryDepartmentId: string | null;
@@ -231,6 +234,7 @@ export function calculateDeletionPolicy(
   else if (profile.enrollmentStatus !== 'enrolled') unknownReasons.push('신청 및 처리 기간의 재학 상태를 확인해 주세요.');
 
   const semesters = profile.registeredSemesters;
+  if (profile.registeredSemestersEstimated) unknownReasons.push('등록학기 수는 성적표에서 추정한 값입니다. 실제 등록학기를 확인한 뒤 삭제 규칙을 적용해 주세요.');
   let referenceSemesters: number | null = null;
   let completionCreditFloor: number | null = null;
   if (semesters == null || !Number.isInteger(semesters) || semesters < 1) {

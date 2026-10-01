@@ -4,8 +4,8 @@ import type { Semester, PlannedCourse, GoalResult } from '../domain/types';
 import type { CategoryOption } from './CourseEditor';
 import { Badge, Empty, Field, Modal, Notice } from './ui';
 
-export function PlanView({ semesters, categories, goal, onAddSemester, onRemoveSemester, onUpdateSemester, onAddCourse, onEditCourse, onRemoveCourse }: {
-  semesters: Semester[]; categories: CategoryOption[]; goal: GoalResult | null;
+export function PlanView({ semesters, categories, goal, remainingCredits, onAddSemester, onRemoveSemester, onUpdateSemester, onAddCourse, onEditCourse, onRemoveCourse }: {
+  semesters: Semester[]; categories: CategoryOption[]; goal: GoalResult | null; remainingCredits: number | null;
   onAddSemester: (label: string) => void; onRemoveSemester: (semester: Semester) => void;
   onUpdateSemester: (semester: Semester) => void; onAddCourse: (id: string) => void;
   onEditCourse: (id: string, course: PlannedCourse) => void; onRemoveCourse: (id: string, course: PlannedCourse) => void;
@@ -16,6 +16,9 @@ export function PlanView({ semesters, categories, goal, onAddSemester, onRemoveS
   const [target, setTarget] = useState('');
   const [error, setError] = useState('');
   const names = new Map(categories.map(item => [item.id, item.label]));
+  const plannedCourses = semesters.flatMap(semester => semester.courses);
+  const plannedCredits = plannedCourses.reduce((sum, course) => sum + course.credits, 0);
+  const gradedCreditsTotal = plannedCourses.filter(course => course.graded).reduce((sum, course) => sum + course.credits, 0);
   function fixTarget(event: FormEvent) {
     event.preventDefault();
     if (!/^\d+(\.\d{1,3})?$/.test(target) || Number(target) > 4.5 || Number(target) < 0) { setError('0~4.5 범위의 소수 셋째 자리 이내 값으로 입력해 주세요.'); return; }
@@ -24,7 +27,8 @@ export function PlanView({ semesters, categories, goal, onAddSemester, onRemoveS
   }
   return <div className="stack">
     <div className="page-intro"><div><h1>앞으로의 학기 계획</h1><p>한 학기의 목표를 고정하면, 나머지 학기에 필요한 성적을 다시 계산해요.</p></div><button className="button primary" onClick={() => { setLabel(''); setAdding(true); }}><Plus size={17}/>학기 추가</button></div>
-    <div className="plan-overview panel"><CalendarDays size={24}/><div><strong>{semesters.length}개 학기, {goal?.futureCredits ?? 0} 이수 학점 수 계획</strong><p>평점 반영 {goal?.futureGradedCredits ?? 0} · 평점 미반영 {(goal?.futureCredits ?? 0) - (goal?.futureGradedCredits ?? 0)}</p></div>{goal && <Badge tone={goal.status === 'impossible' ? 'red' : 'green'}>{goal.status === 'impossible' ? '현재 계획으로 달성 불가' : '계획 조정 가능'}</Badge>}</div>
+    <div className="plan-overview panel"><CalendarDays size={24}/><div><strong>{semesters.length}개 학기 · {remainingCredits === null ? `${plannedCredits}학점 / 필요 학점 확인 필요` : `${plannedCredits}/${remainingCredits}학점 계획`}</strong><p>계획 이수 학점 / 졸업까지 남은 필요 학점</p><p>평점 반영 {gradedCreditsTotal} · 평점 미반영 {plannedCredits - gradedCreditsTotal}</p></div>{goal && <Badge tone={goal.status === 'impossible' ? 'red' : 'green'}>{goal.status === 'impossible' ? '현재 계획으로 달성 불가' : '계획 조정 가능'}</Badge>}</div>
+    <Notice>자동 계획은 신청 학기부터 휴학·계절학기 없이 정규학기당 최대 18학점으로 배분한 가상 과목입니다. 처음에는 모두 평점 반영 과목이며, 전공·교양·필수과목 요건에는 반영하지 않습니다. 과목별 수정에서 실제 과목 구분과 P/N 여부를 변경하세요. 실제 수강신청을 대신하지 않습니다.</Notice>
     {goal?.status === 'impossible' && <Notice tone="warning">{goal.reason} 고정한 목표 또는 수강계획을 조정해 주세요.</Notice>}
     {semesters.length === 0 && <div className="panel"><Empty title="다음 학기를 그려 보세요" description="학기를 추가하고 이수할 과목을 계획하면 목표에 필요한 평균평점이 나타납니다." action={<button className="button primary" onClick={() => setAdding(true)}><Plus size={16}/>첫 학기 추가</button>}/></div>}
     <div className="semester-grid">{semesters.map((semester, index) => {

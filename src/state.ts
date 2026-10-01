@@ -58,7 +58,9 @@ export function parseSavedState(raw: string): AppState {
     && ['registeredSemesters', 'secondarySelectionYear', 'baselineEarnedCredits'].every(key => nullableNumber(academic[key]))
     && ['curriculumYear', 'transferAdmissionYear', 'transferEntryGrade'].every(key => optionalNumber(academic[key]))
     && finite(academic.priorPendingDeletionCredits);
-  if (!academicValid || typeof value.applicationTerm !== 'string' || !/^\d{4}-(1|2)$/.test(value.applicationTerm)) throw new Error('학적 정보의 저장 형식이 올바르지 않습니다.');
+  const provenanceValid = (academic.registeredSemestersEstimated === undefined || typeof academic.registeredSemestersEstimated === 'boolean')
+    && ['registrationSourceNote', 'baselineSourceNote'].every(key => academic[key] === undefined || (typeof academic[key] === 'string' && academic[key].length <= 2000));
+  if (!academicValid || !provenanceValid || typeof value.applicationTerm !== 'string' || !/^\d{4}-(1|2)$/.test(value.applicationTerm)) throw new Error('학적 정보의 저장 형식이 올바르지 않습니다.');
   if (!Array.isArray(value.courses) || value.courses.length > 2000 || !value.courses.every(item => courseShape(item))) throw new Error('과목 데이터가 올바르지 않습니다.');
   if (!Array.isArray(value.semesters) || value.semesters.length > 30 || !value.semesters.every(item => record(item) && typeof item.id === 'string' && typeof item.label === 'string' && nullableTarget(item.fixedTarget) && Array.isArray(item.courses) && item.courses.length <= 2000 && item.courses.every(course => courseShape(course, true)))) throw new Error('학기 계획의 저장 형식이 올바르지 않습니다.');
   if (!texts(value.selectedCourseIds) || !texts(value.confirmedChecks) || !nullableTarget(value.targetGpa) || typeof value.saveEnabled !== 'boolean' || typeof value.demo !== 'boolean' || typeof value.ruleVersion !== 'string') throw new Error('시뮬레이션의 저장 형식이 올바르지 않습니다.');

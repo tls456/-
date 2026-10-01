@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Download, Upload, Settings2, Calculator, RotateCcw, Database } from 'lucide-react';
-import { GRADES, normalizeGrade, type AcademicDeletionPolicy, type StudentAcademic } from '../data/academic';
+import { GRADES, type AcademicDeletionPolicy, type StudentAcademic } from '../data/academic';
 import type { BuiltProfile } from '../domain/buildProfile';
-import type { Course } from '../domain/types';
+import { sumConfirmedEarnedCredits } from '../domain/policyCredits';
+export { sumConfirmedEarnedCredits } from '../domain/policyCredits';
 import { RULE_VERSION, type AppState } from '../state';
 import { Badge, Field, Notice, SourceLink } from './ui';
 
@@ -45,45 +46,6 @@ function integer(value: string, minimum: number): number | null | undefined {
   return Number.isSafeInteger(parsed) && parsed >= minimum ? parsed : undefined;
 }
 
-function termOrdinal(value: string): { order: number; seasonal: boolean } | null {
-  const match = /^(\d{4})-(1|여름|2|겨울)$/.exec(value.trim());
-  if (!match) return null;
-  const offsets: Record<string, number> = { '1': 0, '여름': 1, '2': 2, '겨울': 3 };
-  return { order: Number(match[1]) * 4 + offsets[match[2]], seasonal: ['여름', '겨울'].includes(match[2]) };
-}
-
-/** Sum posted earned credits only. Never treat deletion selection as an actual withdrawal. */
-export function sumConfirmedEarnedCredits(courses: Course[], applicationTerm: string, round: StudentAcademic['deletionRound']):
-  { credits: number | null; includedCount: number; excludedCount: number; error: string | null } {
-  const failure = (error: string) => ({ credits: null, includedCount: 0, excludedCount: 0, error });
-  const application = termOrdinal(applicationTerm);
-  if (!application || application.seasonal) return failure('신청 학기를 YYYY-1 또는 YYYY-2 형식으로 먼저 확인해 주세요.');
-  if (!courses.length) return failure('전체 확정 성적을 먼저 입력해 주세요.');
-  let credits = 0;
-  let includedCount = 0;
-  let excludedCount = 0;
-  const codes = new Set<string>();
-  const names = new Set<string>();
-  for (const course of courses) {
-    const semester = termOrdinal(course.semester);
-    if (!semester) return failure(`${course.name}: 이수 학기가 올바르지 않아 합산할 수 없습니다.`);
-    const inPeriod = semester.order < application.order || (round === 'second' && semester.order === application.order);
-    if (!inPeriod) { excludedCount++; continue; }
-    if (semester.seasonal) return failure('계절학기의 취득학점 반영 시점은 자동 판단하지 않습니다. 학사시스템의 해당 차수 기준 총 취득학점을 직접 입력해 주세요.');
-    if (!Number.isSafeInteger(course.credits) || course.credits <= 0) return failure(`${course.name}: 과목 학점 수를 양의 정수로 확인해 주세요.`);
-    const grade = GRADES.find((item) => item.label === normalizeGrade(course.grade));
-    if (!grade) return failure(`${course.name}: 확정된 성적 등급을 확인해 주세요.`);
-    const code = course.courseCode?.trim().toUpperCase();
-    const name = course.name.replace(/\s+/g, '').toLocaleLowerCase('ko-KR');
-    if ((code && codes.has(code)) || (name && names.has(name))) return failure('동일 과목으로 보이는 기록이 있습니다. 중복수강·포기 반영 결과를 확인한 뒤 학사시스템의 총 취득학점을 직접 입력해 주세요.');
-    if (code) codes.add(code);
-    if (name) names.add(name);
-    if (grade.earned) { credits += course.credits; includedCount++; }
-    else excludedCount++;
-  }
-  if (!Number.isSafeInteger(credits)) return failure('정확하게 합산할 수 있는 범위를 초과했습니다.');
-  return { credits, includedCount, excludedCount, error: null };
-}
 
 export function RulesView({ state, profile, policy, onUpdate, onEditAcademic, onExport, onImport, onReset, onDemo }: RulesViewProps) {
   const [draft, setDraft] = useState(() => draftFromState(state));
@@ -120,6 +82,9 @@ export function RulesView({ state, profile, policy, onUpdate, onEditAcademic, on
       academic: {
         ...state.academic,
         registeredSemesters: semesters ?? null,
+        registeredSemestersEstimated: false,
+        registrationSourceNote: '사용자가 확인하고 적용한 등록학기 수',
+        baselineSourceNote: '사용자가 확인하고 적용한 기준 총 취득학점',
         enrollmentStatus: draft.status,
         deletionRound: draft.round,
         baselineEarnedCredits: baseline ?? null,
@@ -161,11 +126,11 @@ export function RulesView({ state, profile, policy, onUpdate, onEditAcademic, on
       <div className="panel-heading"><div><h2>취득학점포기 계산 기준</h2><p>학사시스템의 취득학점확인원과 신청 공지를 기준으로 입력해 주세요.</p></div><Badge tone={policy.confirmed && !policy.blockedReasons?.length ? 'green' : 'amber'}>{policy.blockedReasons?.length ? '신청 제한 확인' : policy.confirmed ? '계산 기준 입력됨' : '입력·확인 필요'}</Badge></div>
       <form className="stack" onSubmit={savePolicy} noValidate>
         <div className="form-grid">
-          <Field label="현재 등록학기 수" hint="이번 학기 포함. 편입 인정학기도 포함합니다." error={errors.semesters}><input inputMode="numeric" type="text" placeholder="예: 7" value={draft.semesters} onChange={(event) => update('semesters', event.target.value)}/></Field>
+          <Field label="현재 등록학기 수" hint={state.academic.registrationSourceNote ?? '이번 학기 포함. 편입 인정학기도 포함합니다.'} error={errors.semesters}><input inputMode="numeric" type="text" placeholder="예: 7" value={draft.semesters} onChange={(event) => update('semesters', event.target.value)}/></Field>
           <Field label="신청·처리 기간의 학적 상태"><select value={draft.status} onChange={(event) => update('status', event.target.value as PolicyDraft['status'])}><option value="unknown">확인하지 않음</option><option value="enrolled">재학</option><option value="leave">휴학</option></select></Field>
           <Field label="신청 차수"><select value={draft.round} onChange={(event) => update('round', event.target.value as PolicyDraft['round'])}><option value="first">1차 · 이전 학기까지</option><option value="second">2차 · 당해 학기 포함</option></select></Field>
           <Field label="신청 학기" hint="실제 신청 기간은 학교 공지를 확인해 주세요." error={errors.applicationTerm}><input type="text" placeholder="2026-2" value={draft.applicationTerm} onChange={(event) => update('applicationTerm', event.target.value)}/></Field>
-          <Field label="기준 총 취득학점" hint={draft.round === 'first' ? '이전 학기까지의 취득학점. F/N 제외, P 포함.' : '당해 학기 확정 성적까지 포함한 취득학점. F/N 제외, P 포함.'} error={errors.baseline}><input inputMode="numeric" type="text" placeholder="미확인" value={draft.baseline} onChange={(event) => update('baseline', event.target.value)}/></Field>
+          <Field label="기준 총 취득학점" hint={state.academic.baselineSourceNote ?? (draft.round === 'first' ? '이전 학기까지의 취득학점. F/N 제외, P 포함.' : '당해 학기 확정 성적까지 포함한 취득학점. F/N 제외, P 포함.')} error={errors.baseline}><input inputMode="numeric" type="text" placeholder="미확인" value={draft.baseline} onChange={(event) => update('baseline', event.target.value)}/></Field>
           <Field label="기준 취득학점에 미반영된 신청량" hint="이미 확정 삭제된 학점은 다시 빼지 않습니다. 미처리 F/N은 0학점으로 셉니다." error={errors.pending}><input inputMode="numeric" type="text" value={draft.pending} onChange={(event) => update('pending', event.target.value)}/></Field>
         </div>
         <div className="stack">

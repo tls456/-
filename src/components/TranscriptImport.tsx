@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { GRADES } from '../data/academic';
+import { GRADES, type StudentAcademic } from '../data/academic';
+import { proposeImportAcademic } from '../domain/importAcademic';
 import type { BuiltProfile } from '../domain/buildProfile';
 import type { Course } from '../domain/types';
 import { courseKey, parseTranscript, rowErrors, timetableSummary, type Transcript, type TranscriptRow } from '../domain/transcript';
 import { Field, Modal, Notice } from './ui';
 
-export function TranscriptImport({ profile, existing, onApply, onClose }: {
-  profile: BuiltProfile; existing: Course[]; onApply: (courses: Course[], mode: 'append' | 'replace') => void; onClose: () => void;
+export function TranscriptImport({ profile, existing, academic, applicationTerm, onApply, onClose }: {
+  profile: BuiltProfile; existing: Course[]; academic: StudentAcademic; applicationTerm: string;
+  onApply: (courses: Course[], mode: 'append' | 'replace', academic: StudentAcademic) => void; onClose: () => void;
 }) {
   const [data, setData] = useState<Transcript | null>(null);
   const [busy, setBusy] = useState(false);
@@ -14,11 +16,12 @@ export function TranscriptImport({ profile, existing, onApply, onClose }: {
   const [mode, setMode] = useState<'append' | 'replace'>('append');
   const [acknowledged, setAcknowledged] = useState(false);
   const [replaceConfirmed, setReplaceConfirmed] = useState(false);
+  const [registrationOverride, setRegistrationOverride] = useState<string | null>(null);
   const generation = useRef(0);
   useEffect(() => () => { generation.current++; }, []);
   async function read(file: File) {
     const request = ++generation.current;
-    setBusy(true); setError(''); setData(null); setAcknowledged(false); setReplaceConfirmed(false);
+    setBusy(true); setError(''); setData(null); setAcknowledged(false); setReplaceConfirmed(false); setRegistrationOverride(null);
     try {
       const { extractPdfText } = await import('../pdf');
       const parsed = parseTranscript(await extractPdfText(file), profile);
@@ -37,6 +40,10 @@ export function TranscriptImport({ profile, existing, onApply, onClose }: {
   const existingKeys = new Set(existing.map(courseKey));
   const selected = data?.rows.filter(row => row.included) ?? [];
   const pending = selected.filter(row => mode === 'replace' || !existingKeys.has(courseKey(row.course)));
+  const finalCourses = mode === 'replace' ? pending.map(row => row.course) : [...existing, ...pending.map(row => row.course)];
+  const proposal = data ? proposeImportAcademic(data, finalCourses, academic, applicationTerm) : null;
+  const registrationValue = registrationOverride ?? String(proposal?.registeredSemesters ?? academic.registeredSemesters ?? '');
+  const validRegistration = registrationValue === '' || (/^[1-9]\d*$/.test(registrationValue) && Number.isSafeInteger(Number(registrationValue)));
   const duplicateCount = selected.length - pending.length;
   const candidates = pending.filter(row => row.candidateCategoryId);
   const confirmableCandidates = candidates.filter(row => row.course.categoryId === row.candidateCategoryId && !row.note && !row.course.transferCredit);
@@ -44,7 +51,7 @@ export function TranscriptImport({ profile, existing, onApply, onClose }: {
   let internalDuplicates = false;
   for (const row of pending) { const key = courseKey(row.course); if (duplicateKeys.has(key)) internalDuplicates = true; duplicateKeys.add(key); }
   const errors = pending.flatMap(row => rowErrors(row, profile));
-  const ready = !!data && !busy && pending.length > 0 && errors.length === 0 && !internalDuplicates
+  const ready = !!data && !busy && pending.length > 0 && errors.length === 0 && !internalDuplicates && validRegistration
     && (!data.warnings.length || acknowledged) && (mode !== 'replace' || replaceConfirmed)
     && (mode === 'replace' ? pending.length : existing.length + pending.length) <= 2000;
   return <Modal title="성적표 PDF 가져오기" wide onClose={onClose}><div className="stack transcript-import">
@@ -57,10 +64,15 @@ export function TranscriptImport({ profile, existing, onApply, onClose }: {
     <p className="muted small">개발자가 등록한 시간표: {timetableSummary || '없음'}. 과목명이 아닌 학수번호·이수구분으로 매칭합니다.</p>
     {data && <>
       <div className="import-summary"><strong>추출 {data.rows.length}과목 · {data.rows.reduce((sum, row) => sum + row.course.credits, 0)}학점</strong><span>성적표 총 취득학점: {data.reportedCredits ?? '미확인'} · 총 평균평점: {data.reportedGpa ?? '미확인'}</span></div>
+      {proposal && <div className="panel stack compact"><h3>적용 규칙에 함께 입력할 값</h3><p>기준 총 취득학점: <strong>{proposal.baseline ?? '확인 필요'}{proposal.baseline !== null ? '학점' : ''}</strong></p><p className="small muted">{proposal.baselineReason}</p>
+        <Field label="가져올 현재 등록학기 수" hint={proposal.registrationReason} error={!validRegistration ? '1 이상의 정수 또는 빈 값으로 입력해 주세요.' : undefined}><input aria-label="가져올 현재 등록학기 수" inputMode="numeric" value={registrationValue} placeholder="직접 확인 필요" onChange={event => setRegistrationOverride(event.target.value)}/></Field>
+        <p className="small muted">등록학기 수는 계절학기 수가 아닙니다. 편입 인정학기·휴학 여부는 성적 과목만으로 확정하지 않습니다. 확인할 수 없는 값은 비워둘 수 있습니다.</p>
+        {data.reportedEnrollmentStatus && <p className="small muted">성적표 학적상태: {data.reportedEnrollmentStatus === 'enrolled' ? '재학' : '휴학'} · 성적표 발급 시점 이후 변경되었으면 적용 규칙에서 수정하세요.</p>}
+      </div>}
       <Notice>다른 학기의 시간표는 분류 후보만 제공합니다. 후보를 선택하고 각 과목의 확인 체크를 해 주세요. 인정·삭제 표시가 있는 과목은 학교에서 최종 반영된 기록인지 확인하고, 이미 삭제된 기록은 포함을 해제하세요. 편입 인정은 별도로 체크합니다.</Notice>
       {data.warnings.length > 0 && <Notice tone="warning"><ul>{data.warnings.map((warning, i) => <li key={i}>{warning}</li>)}</ul><label className="check-label"><input type="checkbox" checked={acknowledged} onChange={event => setAcknowledged(event.target.checked)}/>누락·총량 차이를 확인했고 필요한 수정 또는 제외를 했습니다.</label></Notice>}
       <Field label="반영 방식"><select aria-label="반영 방식" value={mode} onChange={event => { setMode(event.target.value as typeof mode); setReplaceConfirmed(false); }}><option value="append">기존 성적에 추가 (동일 학기·학수번호는 건너뜀)</option><option value="replace">기존 이수 성적 전체 교체</option></select></Field>
-      {mode === 'replace' && <Notice tone="warning"><label className="check-label"><input type="checkbox" checked={replaceConfirmed} onChange={event => setReplaceConfirmed(event.target.checked)}/>기존 이수 과목 {existing.length}개와 삭제 선택을 교체합니다. 필요한 기록을 백업했고 교체에 동의합니다.</label>학적·개인별 요건·미래 학기 계획은 유지됩니다.</Notice>}
+      {mode === 'replace' && <Notice tone="warning"><label className="check-label"><input type="checkbox" checked={replaceConfirmed} onChange={event => setReplaceConfirmed(event.target.checked)}/>기존 이수 과목 {existing.length}개와 삭제 선택을 교체합니다. 필요한 기록을 백업했고 교체에 동의합니다.</label>교육과정·개인별 요건·미래 계획은 유지하고, 기준 총 취득학점과 등록학기 수는 위 값으로 갱신합니다.</Notice>}
       {duplicateCount > 0 && <Notice>기존 기록과 중복되는 {duplicateCount}개는 추가하지 않습니다. 등급이 달라도 덮어쓰지 않습니다. 수정이 필요하면 기존 과목을 수정하거나 전체 교체를 선택하세요.</Notice>}
       {internalDuplicates && <Notice tone="error">가져올 기록 안에 동일 학기·학수번호가 중복됩니다. 재수강·중복 행을 확인하고 불필요한 기록의 포함을 해제해 주세요.</Notice>}
       {candidates.length > 0 && <div className="stack compact">
@@ -94,7 +106,13 @@ export function TranscriptImport({ profile, existing, onApply, onClose }: {
       })}</div>
       <p className="muted small">반영 예정 {pending.length}개. 재수강·학점포기 이력 및 삭제 한도의 기준 취득학점은 가져오기 후 적용 규칙에서 확인하세요.</p>
       <div className="modal-actions"><button className="button secondary" onClick={onClose}>취소</button><button className="button primary" disabled={!ready} onClick={() => {
-        if (ready) onApply(pending.map(row => ({ ...row.course, id: crypto.randomUUID() })), mode);
+        if (ready && proposal) onApply(pending.map(row => ({ ...row.course, id: crypto.randomUUID() })), mode, {
+          ...academic, baselineEarnedCredits: proposal.baseline, baselineSourceNote: proposal.baselineReason,
+          enrollmentStatus: data.reportedEnrollmentStatus ?? academic.enrollmentStatus,
+          registeredSemesters: registrationValue ? Number(registrationValue) : null,
+          registeredSemestersEstimated: registrationOverride === null && proposal.registeredSemesters === null ? academic.registeredSemestersEstimated : false,
+          registrationSourceNote: registrationOverride !== null ? '성적표 가져오기에서 사용자가 직접 확인한 등록학기 수' : proposal.registeredSemesters === null && academic.registeredSemesters !== null ? academic.registrationSourceNote ?? '기존에 입력한 등록학기 수 유지' : proposal.registrationReason,
+        });
       }}>확인한 성적 반영</button></div>
     </>}
   </div></Modal>;

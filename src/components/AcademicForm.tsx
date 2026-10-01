@@ -40,7 +40,7 @@ export function AcademicForm({ value, onChange }: { value: StudentAcademic; onCh
   </div>;
 }
 
-export function Onboarding({ onStart, onDemo, restoreError }: { onStart: (academic: StudentAcademic) => void; onDemo: () => void; restoreError: string | null }) {
+export function Onboarding({ onStart, restoreError }: { onStart: (academic: StudentAcademic) => void; restoreError: string | null }) {
   const [studentId, setStudentId] = useState('');
   const [academic, setAcademic] = useState<StudentAcademic | null>(null);
   const [error, setError] = useState('');
@@ -73,13 +73,9 @@ export function Onboarding({ onStart, onDemo, restoreError }: { onStart: (academ
         {!academic ? <form onSubmit={next} className="stack">
           <Field label="학번" hint="전체 학번은 저장하지 않습니다. 입학연도 4자리만 입력해도 됩니다." error={error}><input className="student-id-input" inputMode="numeric" autoComplete="off" autoFocus placeholder="예: 202312345" value={studentId} onChange={event => setStudentId(event.target.value)} maxLength={12}/></Field>
           <button type="submit" className="button primary large">교육과정 찾기<ArrowRight size={19}/></button>
-          <div className="divider"><span>먼저 둘러보고 싶다면</span></div>
-          <button type="button" className="button secondary large" onClick={onDemo}>가상 성적으로 시연해 보기<ArrowUpIcon/></button>
           <p className="privacy-note">학교 계정이나 비밀번호는 필요하지 않아요.<br/>입력한 성적은 이 브라우저에서만 계산합니다.</p>
         </form> : <form onSubmit={start} className="stack"><AcademicForm value={academic} onChange={setAcademic}/>{error && <Notice tone="error">{error}</Notice>}<div className="modal-actions"><button type="button" className="button secondary" onClick={() => { setAcademic(null); setError(''); }}><ArrowLeft size={17}/>이전</button><button type="submit" className="button primary">나의 졸업 계획 시작<ArrowRight size={17}/></button></div></form>}
       </div>
     </div>
   </main>;
 }
-
-function ArrowUpIcon() { return <span aria-hidden="true">↗</span>; }

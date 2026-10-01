@@ -101,6 +101,23 @@ describe('성적표 추출과 시간표 영역 매칭', () => {
     expect(parsed.course.deletionEligibility).toBe('unknown');
     expect(parsed.note).toBe('특별인정');
   });
+  it('모든 학기의 동참형학기제 P 인정은 확인 체크 없이 일반교양으로 반영한다', () => {
+    for (const year of [2020, 2024, 2025, 2026]) for (const term of ['1학기', '2학기', '여름학기', '겨울학기']) {
+      const parsed = parseTranscript(`${year} ${term} 일교 ZAAA58470 가상동참 1 P 동참형학기제인정학점`, profile).rows[0];
+      expect(parsed.course.categoryId).toBe('ge-other');
+      expect(parsed.course.deletionEligibility).toBe('ineligible');
+      expect(parsed.note).toBe('');
+      expect(parsed.needsConfirmation).toBe(false);
+      expect(rowErrors(parsed, profile)).toEqual([]);
+    }
+  });
+  it('동참형학기제라도 다른 인정문구·등급·학점이면 확인받는다', () => {
+    for (const line of [
+      '2025 1학기 일교 ZAAA58470 가상동참 1 P 다른인정',
+      '2025 1학기 일교 ZAAA58470 가상동참 2 P 동참형학기제인정학점',
+      '2025 1학기 일교 ZAAA58470 가상동참 1 A 동참형학기제인정학점',
+    ]) expect(rowErrors(parseTranscript(line, profile).rows[0], profile)).toContain('확인 체크 필요');
+  });
   it('불완전한 행과 총량 차이를 숨기지 않는다', () => {
     const parsed = parseTranscript(`${row}\n2025 2학기 전선 판독실패\n총 취득학점 : 10.0`, profile);
     expect(parsed.warnings).toHaveLength(2);

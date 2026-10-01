@@ -1,5 +1,6 @@
 import { GRADES, normalizeGrade } from '../data/academic';
 import timetables from '../data/timetables.json';
+import { SUPPLEMENTAL_COURSES } from '../data/supplemental-courses';
 import type { BuiltProfile } from './buildProfile';
 import type { Course } from './types';
 
@@ -18,6 +19,8 @@ export interface Transcript {
   warnings: string[];
   reportedCredits: number | null;
   reportedGpa: number | null;
+  reportedRegisteredSemesters: number | null;
+  reportedEnrollmentStatus: 'enrolled' | 'leave' | null;
 }
 export interface Timetable {
   term: string;
@@ -67,21 +70,30 @@ export function parseTranscript(text: string, profile: BuiltProfile, tables: rea
     const [, year, term, kind, code, name, credits, rawGrade, note = ''] = match;
     const grade = normalizeGrade(rawGrade)!;
     const semester = `${year}-${term.startsWith('1') ? '1' : term.startsWith('2') ? '2' : term.startsWith('여름') ? '여름' : '겨울'}`;
+    const supplemental = SUPPLEMENTAL_COURSES.find(item => item.code === code && item.kind === kind
+      && item.credits === Number(credits) && item.grade === grade && item.recognition === note.replace(/\s+/g, ''));
+    const effectiveNote = supplemental ? '' : note;
     const course: Course = { id: `pdf-${rows.length}`, courseCode: code, name: name.replace(/\s+/g, ' ').trim(), semester,
-      categoryId: '', credits: Number(credits), grade, deletionEligibility: note ? 'unknown' : 'eligible',
-      ...(note ? { deletionReason: `성적표 인정/삭제 구분 확인: ${note}` } : {}) };
+      categoryId: '', credits: Number(credits), grade, deletionEligibility: supplemental ? 'ineligible' : effectiveNote ? 'unknown' : 'eligible',
+      ...(supplemental ? { deletionReason: '일반교양 인정학점 · P등급은 학점포기 대상이 아닙니다.' }
+        : effectiveNote ? { deletionReason: `성적표 인정/삭제 구분 확인: ${effectiveNote}` } : {}) };
     const classified = classifyRow(course, kind, profile, tables);
     course.categoryId = classified.categoryId;
-    rows.push({ course, kind, note, ...classified, confirmed: false, included: true });
+    rows.push({ course, kind, note: effectiveNote, ...classified,
+      ...(supplemental ? { classification: `개발자 등록 인정과목: ${supplemental.name} · 일반교양 1학점 · P (평점 제외)`, needsConfirmation: false } : {}), confirmed: false, included: true });
   }
   const total = text.match(/총\s*취득학점\s*:\s*(\d+(?:\.\d+)?)/);
   const gpa = text.match(/총\s*(?:평균평점|평점평균)\s*:\s*(\d+(?:\.\d+)?)/);
   const reportedCredits = total ? Number(total[1]) : null;
   const reportedGpa = gpa ? Number(gpa[1]) : null;
+  const registration = text.match(/(?:현재\s*)?등록학기\s*(?:수)?\s*[:：]\s*(\d+)/);
+  const reportedRegisteredSemesters = registration && Number(registration[1]) > 0 ? Number(registration[1]) : null;
+  const enrollment = text.match(/학적상태\s*[:：]?\s*(재학생|휴학생)/);
+  const reportedEnrollmentStatus = enrollment ? enrollment[1] === '재학생' ? 'enrolled' : 'leave' : null;
   const earned = rows.reduce((sum, row) => sum + (GRADES.find(grade => grade.label === row.course.grade)?.earned ? row.course.credits : 0), 0);
   if (reportedCredits !== null && earned !== reportedCredits) warnings.push(`성적표 총 취득학점 ${reportedCredits}와 추출한 취득학점 ${earned}가 다릅니다. 누락·재수강·삭제 표시를 확인해 주세요.`);
   if (rows.length === 0) throw new Error('과목 표를 읽지 못했습니다. 지원하는 텍스트 성적표인지 확인해 주세요. 스캔 PDF는 지원하지 않습니다.');
-  return { rows, warnings, reportedCredits, reportedGpa };
+  return { rows, warnings, reportedCredits, reportedGpa, reportedRegisteredSemesters, reportedEnrollmentStatus };
 }
 
 export function rowErrors(row: TranscriptRow, profile: BuiltProfile): string[] {

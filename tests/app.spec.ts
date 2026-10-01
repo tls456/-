@@ -1,13 +1,16 @@
 import { test, expect, type Page } from '@playwright/test';
+import { createDemo } from '../src/demo';
+import { STORAGE_KEY } from '../src/state';
 
 async function openDemo(page: Page) {
+  await page.addInitScript(({ key, saved }) => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(saved)); }, { key: STORAGE_KEY, saved: createDemo() });
   await page.goto('/');
-  await page.getByRole('button', { name: /가상 성적으로 시연/ }).click();
   await expect(page.getByRole('heading', { name: '졸업까지, 한눈에.' })).toBeVisible();
 }
 
 test('학번 입력 후 2020 교육과정에 매칭하고 전체 학번은 저장하지 않는다', async ({ page }) => {
   await page.goto('/');
+  await expect(page.getByRole('button', { name: /가상 성적으로 시연/ })).toHaveCount(0);
   await page.getByPlaceholder('예: 202312345').fill('201912345');
   await page.getByRole('button', { name: '교육과정 찾기' }).click();
   await expect(page.getByRole('alert')).toContainText('2020~2026');
@@ -15,7 +18,7 @@ test('학번 입력 후 2020 교육과정에 매칭하고 전체 학번은 저�
   await page.getByRole('button', { name: '교육과정 찾기' }).click();
   await expect(page.getByText('2020학번은 당시 소프트웨어전공 교육과정에 매칭됩니다.')).toBeVisible();
   await page.getByRole('button', { name: '나의 졸업 계획 시작' }).click();
-  await expect(page.getByRole('heading', { name: '적용 규칙과 데이터' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: '성적표 PDF 가져오기' })).toBeVisible();
   const saved = await page.evaluate(() => localStorage.getItem('hakjeo-mujeomu:v1'));
   expect(saved).toContain('2020');
   expect(saved).not.toContain('202012345');

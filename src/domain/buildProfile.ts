@@ -262,6 +262,7 @@ export function buildProfile(academic: StudentAcademic): BuiltProfile {
   }
 
   categories.push({ id: 'general-free', label: '일반선택' });
+  categories.push({ id: 'plan-unclassified', label: '계획용 미분류 · 영역 요건 미반영' });
   rule.unknownReasons = [...new Set(rule.unknownReasons)];
   rule.nonCreditRequirements = [...new Set(rule.nonCreditRequirements)];
   return {
