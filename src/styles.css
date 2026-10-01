@@ -757,3 +757,27 @@ details li { color: #69775f; }
 .remaining-item small { grid-column: 1 / -1; color: var(--muted); }
 .dashboard-simple details > div { margin-top: 18px; }
 @media (max-width: 640px) { .next-action-grid { grid-template-columns: 1fr; } .action-metric > strong { font-size: 30px; } }
+
+/* Compact dashboard: four metrics above an equal-width summary. */
+.dashboard-simple .next-action-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.dashboard-simple .action-metric { align-content: start; gap: 16px; }
+.dashboard-simple .action-metric > span { font-size: 18px; font-weight: 600; line-height: 1.5; }
+.dashboard-simple .action-metric > span svg { flex-shrink: 0; width: 20px; height: 20px; }
+.dashboard-summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 22px; }
+.dashboard-summary-grid > *, .dashboard-summary-right > * { min-width: 0; }
+.dashboard-summary-right { gap: 22px; }
+.target-metric .simple-goal-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.target-metric .simple-goal-form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.target-metric .simple-goal-form input { width: 100%; min-width: 0; font-size: 26px; font-weight: 600; color: var(--green); }
+.target-metric .simple-goal-form .error-text { grid-column: 1 / -1; font-size: 12px; }
+.target-metric > .button { justify-self: start; }
+@media (max-width: 1200px) {
+  .dashboard-simple .next-action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .dashboard-summary-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .dashboard-simple .next-action-grid { grid-template-columns: minmax(0, 1fr); }
+  .dashboard-simple .action-metric > span { font-size: 17px; }
+}
