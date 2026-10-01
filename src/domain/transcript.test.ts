@@ -15,7 +15,7 @@ describe('성적표 추출과 시간표 영역 매칭', () => {
     expect(result.warnings).toEqual([]);
   });
   it('다른 학기 자료는 후보로만 제공하고 반영을 차단한다', () => {
-    const parsed = parseTranscript(row, profile).rows[0];
+    const parsed = parseTranscript(row, profile, timetables.filter(table => table.term === '2026-2')).rows[0];
     expect(parsed.course.categoryId).toBe('');
     expect(parsed.candidateCategoryId).toBe('ge-advanced-science');
     expect(rowErrors(parsed, profile)).toContain('확인 체크 필요');
@@ -28,6 +28,55 @@ describe('성적표 추출과 시간표 영역 매칭', () => {
     const parsed = parseTranscript(row.replace('2025 1학기', '2026 2학기'), profile).rows[0];
     expect(parsed.course.categoryId).toBe('ge-advanced-science');
     expect(rowErrors(parsed, profile)).toEqual([]);
+  });
+  it('추가한 과거 동일 학기 자료로 후보 확인을 생략한다', () => {
+    const parsed = parseTranscript(row, profile).rows[0];
+    expect(parsed.course.categoryId).toBe('ge-advanced-science');
+    expect(parsed.candidateCategoryId).toBe('');
+    expect(parsed.needsConfirmation).toBe(false);
+    expect(parsed.classification).toContain('동일 학기 시간표: 2025-1');
+    expect(rowErrors(parsed, profile)).toEqual([]);
+  });
+  it('같은 학기 자료가 있으면 다른 학기 분류가 충돌해도 그 학기를 우선한다', () => {
+    const tables = timetables.filter(table => table.term === '2025-1' || table.term === '2026-2').map(table => table.term === '2026-2' ? { ...table, courses: table.courses.map(item => item.code === 'BKSA47127' ? { ...item, area: '예술과체육' } : item) } : table);
+    expect(parseTranscript(row, profile, tables).rows[0].course.categoryId).toBe('ge-advanced-science');
+  });
+  it('같은 학기 안에서 영역이 충돌하면 자동 분류하지 않는다', () => {
+    const tables = timetables.filter(table => table.term === '2025-1').map(table => ({ ...table, courses: [...table.courses, { code: 'BKSA47127', name: '가상충돌', kind: '심화', credits: 1, area: '예술과체육' }] }));
+    const parsed = parseTranscript(row, profile, tables).rows[0];
+    expect(parsed.course.categoryId).toBe('');
+    expect(parsed.candidateCategoryId).toBe('');
+    expect(parsed.needsConfirmation).toBe(true);
+  });
+  it('이수 학기 자료에 과목이 빠졌다면 다른 학기 자료로 몰래 대체하지 않는다', () => {
+    const tables = timetables.filter(table => table.term === '2025-1' || table.term === '2026-2').map(table => table.term === '2025-1' ? { ...table, courses: table.courses.filter(item => item.code !== 'BKSA47127') } : table);
+    expect(parseTranscript(row, profile, tables).rows[0].course.categoryId).toBe('');
+  });
+  it('2020년부터 기존 2026-2까지 정규·계절학기 27개를 보관한다', () => {
+    expect(timetables).toHaveLength(27);
+    expect(new Set(timetables.map(table => table.term)).size).toBe(27);
+    for (let year = 2020; year <= 2025; year++) for (const term of ['1', '2', '여름', '겨울']) {
+      expect(timetables.some(table => table.term === `${year}-${term}`)).toBe(true);
+    }
+    for (const term of ['2026-1', '2026-여름', '2026-2']) expect(timetables.some(table => table.term === term)).toBe(true);
+    expect(timetables.find(table => table.term === '2026-2')!.courses).toHaveLength(208);
+  });
+  it('의사소통은 대응하는 기존 교육과정에서만 자동 분류한다', () => {
+    const old = buildProfile(defaultAcademic(2020));
+    const sample = timetables.find(table => table.term === '2020-1')!.courses.find(c => c.kind === '기초' && c.area === '의사소통')!;
+    const c = parseTranscript(`2020 1학기 기초 ${sample.code} 가상의사소통 ${sample.credits} A`, old).rows[0].course;
+    expect(c.categoryId).toBe('ge-communication');
+    expect(classifyRow(c, '기초', profile).categoryId).toBe('');
+  });
+  it('과거 인문언어와 빈 영역은 임의 매핑하지 않는다', () => {
+    const old = buildProfile(defaultAcademic(2020));
+    const samples = timetables.flatMap(table => table.courses.filter(c => c.area === '인문언어' || c.area === '').map(c => ({ ...c, term: table.term })));
+    expect(samples.length).toBeGreaterThan(0);
+    for (const sample of samples) {
+      const parsed = parseTranscript(`${sample.term.replace('-', ' ')}학기 ${sample.kind} ${sample.code} 가상미확인 ${sample.credits} A`, old).rows[0];
+      expect(parsed.course.categoryId).toBe('');
+      expect(parsed.needsConfirmation).toBe(true);
+    }
   });
   it('같은 이름이어도 코드가 없으면 추측하지 않는다', () => {
     const parsed = parseTranscript(row.replace('BKSA47127', 'UNKNOWN99999'), profile).rows[0];
@@ -76,7 +125,7 @@ describe('성적표 추출과 시간표 영역 매칭', () => {
   });
   it('2020 의사소통 영역 합산은 해당 교육과정일 때만 적용한다', () => {
     const old = buildProfile(defaultAcademic(2020));
-    const sample = timetables[0].courses.find(c => c.kind === '기초' && c.area === '글쓰기')!;
+    const sample = timetables.find(table => table.term === '2026-2')!.courses.find(c => c.kind === '기초' && c.area === '글쓰기')!;
     const c = parseTranscript(`2026 2학기 기초 ${sample.code} 가상글쓰기 ${sample.credits} A`, old).rows[0].course;
     expect(classifyRow(c, '기초', old).categoryId).toBe('ge-communication');
   });

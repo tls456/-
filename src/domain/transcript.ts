@@ -19,7 +19,14 @@ export interface Transcript {
   reportedCredits: number | null;
   reportedGpa: number | null;
 }
+export interface Timetable {
+  term: string;
+  source: string;
+  sha256: string;
+  courses: { code: string; name: string; kind: string; credits: number; area: string }[];
+}
 const areaIds: Record<string, string> = {
+  '기초:의사소통': 'ge-communication',
   '기초:글쓰기': 'ge-writing', '기초:발표와토론': 'ge-speaking',
   '기초:인문기초': 'ge-humanities', '기초:과학기초': 'ge-science',
   '기초:외국어기초': 'ge-language', '기초:AI/데이터': 'ge-ai',
@@ -29,15 +36,15 @@ const areaIds: Record<string, string> = {
   '심화:예술과체육': 'ge-advanced-arts', '심화:융복합': 'ge-advanced-convergence',
 };
 
-export function classifyRow(course: Course, kind: string, profile: BuiltProfile) {
+export function classifyRow(course: Course, kind: string, profile: BuiltProfile, tables: readonly Timetable[] = timetables) {
   const allowed = new Set(profile.categories.map(item => item.id));
   if (kind === '전선' || kind === '전필') {
     if (profile.categories.some(item => item.id.startsWith('secondary-'))) return { categoryId: '', candidateCategoryId: '', classification: '복수전공 과목의 원전공/다전공 구분을 선택해 주세요.', needsConfirmation: true };
     return { categoryId: `primary-${kind === '전선' ? 'elective' : 'required'}`, candidateCategoryId: '', classification: '성적표 이수구분 · 단일전공', needsConfirmation: false };
   }
   if (kind === '일교' && allowed.has('ge-other')) return { categoryId: 'ge-other', candidateCategoryId: '', classification: '성적표 일반교양 · 세부 필수영역에는 합산하지 않음', needsConfirmation: false };
-  const exact = timetables.filter(item => item.term === course.semester);
-  const matches = (exact.length ? exact : timetables).flatMap(table => table.courses.filter(item => item.code === course.courseCode && item.kind === kind).map(item => ({ ...item, term: table.term, source: table.source })));
+  const exact = tables.filter(item => item.term === course.semester);
+  const matches = (exact.length ? exact : tables).flatMap(table => table.courses.filter(item => item.code === course.courseCode && item.kind === kind).map(item => ({ ...item, term: table.term, source: table.source })));
   const categories = [...new Set(matches.map(item => areaIds[`${item.kind}:${item.area}`] ?? ''))];
   const id = categories.length === 1 ? categories[0] : '';
   // Older communication areas merge writing and speaking; the inspected cohort explicitly defines this union.
@@ -49,7 +56,7 @@ export function classifyRow(course: Course, kind: string, profile: BuiltProfile)
 }
 
 /** Only course rows are retained. Student name/ID and original PDF never enter app state. */
-export function parseTranscript(text: string, profile: BuiltProfile): Transcript {
+export function parseTranscript(text: string, profile: BuiltProfile, tables: readonly Timetable[] = timetables): Transcript {
   const rows: TranscriptRow[] = [];
   const warnings: string[] = [];
   const pattern = /^(\d{4})\s*(1학기|2학기|여름(?:학기|계절학기)?|겨울(?:학기|계절학기)?)\s+(\S+)\s+([A-Z]+\d+)\s+(.+?)\s+(\d+(?:\.\d+)?)\s*(A\+|B\+|C\+|D\+|NP|[ABCDFPN])(?:\s+(.*))?$/;
@@ -63,7 +70,7 @@ export function parseTranscript(text: string, profile: BuiltProfile): Transcript
     const course: Course = { id: `pdf-${rows.length}`, courseCode: code, name: name.replace(/\s+/g, ' ').trim(), semester,
       categoryId: '', credits: Number(credits), grade, deletionEligibility: note ? 'unknown' : 'eligible',
       ...(note ? { deletionReason: `성적표 인정/삭제 구분 확인: ${note}` } : {}) };
-    const classified = classifyRow(course, kind, profile);
+    const classified = classifyRow(course, kind, profile, tables);
     course.categoryId = classified.categoryId;
     rows.push({ course, kind, note, ...classified, confirmed: false, included: true });
   }

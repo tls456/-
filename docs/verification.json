@@ -53,6 +53,20 @@
     "privacy": "Original transcript, student identity, and raw workbook are not repository artifacts; browser fixtures use fictional grades.",
     "performanceNote": "The performance measurements above predate this feature. PDF parsing is loaded on demand."
   },
+  "timetableExpansion": {
+    "checkedDate": "2026-10-02",
+    "branch": "tls456",
+    "importedArchiveSemesters": 26,
+    "registeredSemesters": 27,
+    "distinctLiberalEducationRecords": 3044,
+    "preservedSemester": "2026-2",
+    "unmappedLegacyAreaPolicy": "Keep 인문언어 and empty areas unverified, as confirmed by the user.",
+    "unitAndIntegrationTests": 186,
+    "pythonImporterTests": 8,
+    "browserTests": 11,
+    "providedTranscriptLocalOnly": { "extractedCourses": 27, "credits": 60, "previousOtherTermCandidates": 15, "currentOtherTermCandidates": 0, "importedAfterReview": 27, "pageErrors": 0 },
+    "privacy": "Original ZIP/XLSX and student PDF are not repository artifacts. Only minimal liberal-education records and fictional browser fixtures are included."
+  },
   "sourceData": {
     "curriculumRows": 225,
     "requiredCourseEntries": 1657,

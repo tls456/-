@@ -61,7 +61,20 @@ python3 scripts/import-timetable.py "시간표.xlsx" --term 2026-2
 # Windows에서 python3 대신 python을 사용할 수 있습니다.
 ```
 
-학기는 파일에 없으므로 `--term`을 반드시 지정합니다. 같은 학기 자료를 갱신할 때는 확인 후 `--replace`를 붙입니다. 다른 학기는 기존 자료에 누적됩니다. 생성되는 `src/data/timetables.json`을 리뷰하여 커밋하고 `pnpm test`, `pnpm build`로 검증하세요. 현재 제공받은 **2026-2** 시간표의 교양 208개 분류 기록(분반 중복 제거)을 등록했습니다. 출처 파일명·학기·SHA-256을 기록하고 서로 충돌하는 영역은 그대로 남겨 자동 매칭을 막습니다.
+단일 엑셀에는 학기가 없으므로 `--term`을 반드시 지정합니다. 같은 학기 자료를 갱신할 때는 확인 후 `--replace`를 붙입니다. 다른 학기는 기존 자료에 누적됩니다.
+
+여러 학기 엑셀이 담긴 ZIP도 개발자가 한 번에 등록할 수 있습니다.
+
+```bash
+python3 scripts/import-timetable.py "시간표모음.zip" --dry-run
+python3 scripts/import-timetable.py "시간표모음.zip"
+```
+
+ZIP 안 각 엑셀의 **파일명**에 `2025년 1학기`, `2025년 여름학기`처럼 학기가 명시되어 있어야 합니다. 파일명의 학기가 모호하거나 같은 학기가 중복되면 전체 등록을 중단합니다. ZIP의 내부 경로를 디스크에 풀지 않고 메모리에서 읽습니다. 모든 파일을 검증한 뒤 교양 필드만 JSON에 기록하며, 기존 학기와 겹치면 `--replace` 없이 덮어쓰지 않습니다. 이미 등록한 ZIP을 검증·갱신하려면 위 명령에 `--replace`를 추가하세요.
+
+현재 **2020~2025년의 1·2·여름·겨울학기, 2026년 1·여름·2학기**까지 총 **27개 학기·3,044개 교양 분류 기록**(각 학기 분반 중복 제거)을 등록했습니다. 기존 2026-2 자료는 유지했습니다. 2026년 겨울학기는 제공되지 않았으므로 등록하지 않았습니다. 출처 파일명·학기·SHA-256을 기록하고 서로 충돌하는 영역은 그대로 남겨 자동 매칭을 막습니다. 과거 `인문언어`와 빈 영역은 현재 영역에 임의 변환하지 않고 확인 필요로 남깁니다.
+
+생성되는 `src/data/timetables.json`을 리뷰하여 커밋하고 `pnpm test`, `pnpm test:timetables`, `pnpm build`로 검증하세요. Windows에서 Python 명령이 `python`이면 `python -m unittest discover -s scripts -p test_import_timetable.py`로 가져오기 테스트를 실행할 수 있습니다.
 
 ## 화면 예시
 
@@ -187,6 +200,7 @@ React + TypeScript + Vite, Lucide 아이콘, Vitest, Playwright를 사용합니�
 
 ```bash
 corepack pnpm test
+corepack pnpm test:timetables  # Python 3 표준 라이브러리 기반 ZIP/XLSX 가져오기 검증
 corepack pnpm exec playwright install chromium
 corepack pnpm exec playwright install-deps chromium  # 필요한 Linux 환경에서만
 corepack pnpm test:e2e
@@ -196,7 +210,7 @@ corepack pnpm test:e2e
 
 검증 환경과 최종 결과는 [검증 기록](docs/verification.json)에 기록합니다. 순수 계산 성능과 브라우저 사용자 흐름 검증은 구분합니다.
 
-2026-10-02 PDF 가져오기 추가 검증에서 단위·통합 테스트 179개와 브라우저 테스트 10개가 통과했습니다. 제공받은 실제 성적표도 로컬 브라우저에서 27과목·60학점으로 추출되어, 후보/누락 영역 확인 후 일괄 입력됨을 확인했습니다. 실제 자료는 저장소에 포함하지 않고 자동화 테스트는 가상 성적표만 사용합니다.
+2026-10-02 시간표 확장 검증에서 단위·통합 테스트 186개, 시간표 가져오기 테스트 8개, 브라우저 테스트 11개가 통과했습니다. 제공받은 실제 성적표도 로컬 브라우저에서 27과목·60학점으로 추출되어, 누락 영역/인정 상태 확인 후 일괄 입력됨을 확인했습니다. 이 성적표에서 다른 학기 자료 후보는 기존 15개에서 0개로 줄었습니다. 전체 이수 학기 자료가 등록되어도 빈 영역·인정/삭제 표시는 별도로 확인받습니다. 실제 자료는 저장소에 포함하지 않고 자동화 테스트는 가상 성적표만 사용합니다.
 
 PDF 추가 전 200과목을 20회 측정한 최대 시간은 전체 계산 10.70ms, React 화면 갱신 326.70ms로 개발 목표인 1초 이내였습니다. 동일한 로컬 서버를 켠 뒤 `corepack pnpm benchmark`로 측정할 수 있습니다. 수치는 해당 장비·브라우저에서의 측정값이며 모든 환경의 성능을 보증하지 않습니다.
 

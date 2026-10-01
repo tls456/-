@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:timetables": "python3 -m unittest discover -s scripts -p test_import_timetable.py",
     "benchmark": "node scripts/benchmark-ui.mjs"
   },
   "dependencies": {
