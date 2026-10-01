@@ -43,6 +43,16 @@
     "note": "Missing browser shared libraries and Korean fonts were loaded from temporary user-space Ubuntu package extracts; no system package installation was required."
   },
   "visual": { "screens": 7, "pageErrors": 0, "documentOverflow": false, "artifacts": "docs/screenshots/", "data": "fictional demo grades only" },
+  "pdfImport": {
+    "checkedDate": "2026-10-02",
+    "buildAndTypeCheckPassed": true,
+    "unitAndIntegrationTests": 179,
+    "browserTests": 10,
+    "providedTranscriptLocalOnly": { "extractedCourses": 27, "credits": 60, "candidateClassifications": 15, "importedAfterReview": 27, "pageErrors": 0 },
+    "timetable": { "term": "2026-2", "distinctLiberalEducationRecords": 208 },
+    "privacy": "Original transcript, student identity, and raw workbook are not repository artifacts; browser fixtures use fictional grades.",
+    "performanceNote": "The performance measurements above predate this feature. PDF parsing is loaded on demand."
+  },
   "sourceData": {
     "curriculumRows": 225,
     "requiredCourseEntries": 1657,

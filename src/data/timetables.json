@@ -1,0 +1,1465 @@
+[
+  {
+    "term": "2026-2",
+    "source": "종합강의시간표내역(학부).xlsx",
+    "sha256": "d4277398371db6850d4856458d0cbaa79369e5655f48b0833c381fdf81c0a402",
+    "courses": [
+      {
+        "code": "BKSA01709",
+        "name": "서양철학사",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA04085",
+        "name": "영미문화의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA10922",
+        "name": "건학정신과대학생활",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA11021",
+        "name": "동양미술의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA11049",
+        "name": "문학의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA11067",
+        "name": "미학개론",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA11137",
+        "name": "서양미술의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA11155",
+        "name": "스크린영어",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA11192",
+        "name": "심리학의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA11223",
+        "name": "영화로경제읽기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA11231",
+        "name": "운동과건강관리",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA11247",
+        "name": "인간과복지",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA12943",
+        "name": "영어회화2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA13364",
+        "name": "영어회화1",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA13630",
+        "name": "식물자원의이용",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA15891",
+        "name": "대학기초수학",
+        "kind": "기초",
+        "credits": 2,
+        "area": "과학기초"
+      },
+      {
+        "code": "BKSA39798",
+        "name": "비판적사고와토론",
+        "kind": "기초",
+        "credits": 2,
+        "area": "발표와토론"
+      },
+      {
+        "code": "BKSA39813",
+        "name": "문학과광고",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA39837",
+        "name": "대중예술의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA46966",
+        "name": "실용한국어2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA47127",
+        "name": "동물의행동",
+        "kind": "심화",
+        "credits": 1,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA48172",
+        "name": "논리와비판적사고",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA48185",
+        "name": "뮤지컬의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA49240",
+        "name": "뷰티테라피",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA49630",
+        "name": "언어의세계",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA49983",
+        "name": "문화유산의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA50187",
+        "name": "영어프리젠테이션",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA51421",
+        "name": "토익1",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA51422",
+        "name": "토익2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA51432",
+        "name": "러시아어기초",
+        "kind": "기초",
+        "credits": 2,
+        "area": "외국어기초"
+      },
+      {
+        "code": "BKSA51446",
+        "name": "세계정세바로보기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA51447",
+        "name": "창업과경영",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA51454",
+        "name": "운동과다이어트",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA51466",
+        "name": "현대사회와스포츠",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA51469",
+        "name": "헬스앤휘트니스",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA52782",
+        "name": "사회학의초대",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA52788",
+        "name": "기초영어문장학습",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA53699",
+        "name": "KUGEP1",
+        "kind": "기초",
+        "credits": 2,
+        "area": "외국어기초"
+      },
+      {
+        "code": "BKSA53700",
+        "name": "KUGEP2",
+        "kind": "기초",
+        "credits": 2,
+        "area": "외국어기초"
+      },
+      {
+        "code": "BKSA53724",
+        "name": "성공하는대학생의비전리더십",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA53728",
+        "name": "미디어와세상",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA53742",
+        "name": "요가",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA53743",
+        "name": "축구(초급)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA53744",
+        "name": "축구(중급)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA53745",
+        "name": "미술실기의기초",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA53746",
+        "name": "디자인으로세상읽기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA53751",
+        "name": "클래식음악여행",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA53992",
+        "name": "성인을위한평생학습",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA54360",
+        "name": "라틴댄스",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA54939",
+        "name": "생활한국어2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA54941",
+        "name": "한국어회화2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA54943",
+        "name": "한국어작문2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA54945",
+        "name": "한국어고급표현2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA54946",
+        "name": "TOPIK고급",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA54961",
+        "name": "자생식물의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA56134",
+        "name": "대학생창업실습",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA56558",
+        "name": "컴퓨팅적사고",
+        "kind": "기초",
+        "credits": 2,
+        "area": "AI/데이터"
+      },
+      {
+        "code": "BKSA57742",
+        "name": "몸의미학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA58105",
+        "name": "중원역사문화론(충주의삶과문화)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA58109",
+        "name": "중국어기초",
+        "kind": "기초",
+        "credits": 2,
+        "area": "외국어기초"
+      },
+      {
+        "code": "BKSA58110",
+        "name": "문학의고전",
+        "kind": "기초",
+        "credits": 2,
+        "area": "인문기초"
+      },
+      {
+        "code": "BKSA58112",
+        "name": "역사의고전",
+        "kind": "기초",
+        "credits": 2,
+        "area": "인문기초"
+      },
+      {
+        "code": "BKSA58113",
+        "name": "철학의고전",
+        "kind": "기초",
+        "credits": 2,
+        "area": "인문기초"
+      },
+      {
+        "code": "BKSA58114",
+        "name": "MOS",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA58131",
+        "name": "도시환경의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA58133",
+        "name": "대학기초물리학",
+        "kind": "기초",
+        "credits": 2,
+        "area": "과학기초"
+      },
+      {
+        "code": "BKSA58146",
+        "name": "시사영어읽기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA58147",
+        "name": "한중소통연습",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA58149",
+        "name": "일본어기초",
+        "kind": "기초",
+        "credits": 2,
+        "area": "외국어기초"
+      },
+      {
+        "code": "BKSA58152",
+        "name": "글쓰기심화",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA58154",
+        "name": "동아시아문화사",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58155",
+        "name": "전쟁으로보는서양사",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58158",
+        "name": "동양철학의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58159",
+        "name": "현대사회와철학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58162",
+        "name": "테마별로배우는중국문화",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58163",
+        "name": "한자를통해배우는삶의지혜",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58164",
+        "name": "음식인문학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58166",
+        "name": "경제란무엇인가",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA58175",
+        "name": "고전으로읽는국가론",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA58176",
+        "name": "러시아바로알기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA58187",
+        "name": "생태환경의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA58188",
+        "name": "세계의정원",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA58193",
+        "name": "지역환경과도시건축",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA58194",
+        "name": "친환경건축과생활",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA58195",
+        "name": "라켓스포츠1(배드민턴)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA58196",
+        "name": "라켓스포츠2(스쿼시/테니스)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA58197",
+        "name": "구기스포츠1(농구)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA58200",
+        "name": "지식재산권의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA58202",
+        "name": "기초크로키실기",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA58203",
+        "name": "일상스케치를활용한상상구현",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA58204",
+        "name": "취미로배우는모형제작",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA58208",
+        "name": "오페라의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA58212",
+        "name": "인문학의오뒷세이아",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA58213",
+        "name": "문화콘텐츠:한류",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA58217",
+        "name": "영상미디어와현대사회",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA58219",
+        "name": "미디어중국어",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA58224",
+        "name": "대학기초화학",
+        "kind": "기초",
+        "credits": 2,
+        "area": "과학기초"
+      },
+      {
+        "code": "BKSA58227",
+        "name": "테마별로배우는한국문화2",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA58233",
+        "name": "글쓰기2",
+        "kind": "기초",
+        "credits": 3,
+        "area": "글쓰기"
+      },
+      {
+        "code": "BKSA59466",
+        "name": "나우리택견인성",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA59472",
+        "name": "취업전략수립및역량개발1",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA59473",
+        "name": "취업전략수립및역량개발2",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA59474",
+        "name": "취업전략수립및역량개발3",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA59478",
+        "name": "창업속의법률디자인",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA59479",
+        "name": "감성합창",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA59480",
+        "name": "구기스포츠2(배구)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA59483",
+        "name": "설상스포츠",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA59484",
+        "name": "스토리텔링창작",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA59485",
+        "name": "호신술과자기방어",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA59488",
+        "name": "한국고중세사특강",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA59489",
+        "name": "한국중근세사특강",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA59497",
+        "name": "기후변화개론",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA59502",
+        "name": "환경과에너지",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA59504",
+        "name": "그림과문학이야기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA59511",
+        "name": "현대사회의먹거리쟁점",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA59512",
+        "name": "대학기초생물학",
+        "kind": "기초",
+        "credits": 2,
+        "area": "과학기초"
+      },
+      {
+        "code": "BKSA60545",
+        "name": "미디어리터러시",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA61154",
+        "name": "경제생활과법질서",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA61155",
+        "name": "창조적아이디어발상법",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA61159",
+        "name": "영미문학과생활법률",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA61160",
+        "name": "사이언스디자인의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA62508",
+        "name": "SF문학과미래윤리",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA62510",
+        "name": "팬덤과대중문화콘텐츠의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA62512",
+        "name": "로봇과인간",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA62513",
+        "name": "시베리아지역학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA62515",
+        "name": "문화콘텐츠의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA62516",
+        "name": "스토리텔링과판타지문학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA62517",
+        "name": "MOS활용",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA62944",
+        "name": "4차산업혁명과법",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA62945",
+        "name": "지적재산권사례탐구",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA63359",
+        "name": "감성커뮤니케이션",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA63407",
+        "name": "디지털시대의세계시민-되기",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA63502",
+        "name": "영화음악의이해",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA63514",
+        "name": "입트이는영어동사",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA63535",
+        "name": "창업에필요한특허·디자인·상표",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA63563",
+        "name": "팝음악인사이트",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA64597",
+        "name": "인공지능과인권",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA64600",
+        "name": "중국어심화",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA64602",
+        "name": "삶을치유하는음악",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA64603",
+        "name": "근대한국과세계의만남",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA64604",
+        "name": "도시인문학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA64608",
+        "name": "공감적소통과발표",
+        "kind": "기초",
+        "credits": 2,
+        "area": "발표와토론"
+      },
+      {
+        "code": "BKSA64609",
+        "name": "열린사고와실용적말하기",
+        "kind": "기초",
+        "credits": 2,
+        "area": "발표와토론"
+      },
+      {
+        "code": "BKSA64610",
+        "name": "협력적사고와토의",
+        "kind": "기초",
+        "credits": 2,
+        "area": "발표와토론"
+      },
+      {
+        "code": "BKSA64611",
+        "name": "창의글쓰기",
+        "kind": "기초",
+        "credits": 2,
+        "area": "글쓰기"
+      },
+      {
+        "code": "BKSA64612",
+        "name": "실용글쓰기",
+        "kind": "기초",
+        "credits": 2,
+        "area": "글쓰기"
+      },
+      {
+        "code": "BKSA64613",
+        "name": "성찰글쓰기",
+        "kind": "기초",
+        "credits": 2,
+        "area": "글쓰기"
+      },
+      {
+        "code": "BKSA64615",
+        "name": "글로컬사회봉사",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA64616",
+        "name": "여성리더십과경력개발",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA64617",
+        "name": "취업면접과전략",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA64618",
+        "name": "한문고전읽는법",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA64619",
+        "name": "관계를이어주는우리시대의대화법",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA64623",
+        "name": "미디어글쓰기",
+        "kind": "기초",
+        "credits": 2,
+        "area": "글쓰기"
+      },
+      {
+        "code": "BKSA64877",
+        "name": "ESG·환경·식품·경제",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA65498",
+        "name": "인류문명과갈등",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA65499",
+        "name": "창업기업가론",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA65500",
+        "name": "현대인의정신건강과자기이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA65502",
+        "name": "포스트휴먼이슈읽기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA65610",
+        "name": "흔들리는20대:청년심리학",
+        "kind": "심화",
+        "credits": 1,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA65611",
+        "name": "우주로의여행",
+        "kind": "심화",
+        "credits": 1,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA65612",
+        "name": "음악은왜치료적인가",
+        "kind": "심화",
+        "credits": 1,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA65866",
+        "name": "철학고전톺아보기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA66431",
+        "name": "크로모테라피를이용한힐링디자인",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA66432",
+        "name": "쉽게배우는러시아어",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA66433",
+        "name": "북한전문가와함께배우는통일이야기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA66436",
+        "name": "현대사회와ESG의적용",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA66437",
+        "name": "시대의가치와트렌드캐치",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA66438",
+        "name": "영화로디자인읽기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA67902",
+        "name": "좋은삶이란무엇인가",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA67903",
+        "name": "금융생활과역량탐구",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA67904",
+        "name": "소설로읽는한국문화100년사",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA67905",
+        "name": "여론과미디어",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA67909",
+        "name": "레저스포츠(골프)",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실기"
+      },
+      {
+        "code": "BKSA67911",
+        "name": "슬로리딩과자기돌봄",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA67912",
+        "name": "데이터리터러시",
+        "kind": "기초",
+        "credits": 2,
+        "area": "AI/데이터"
+      },
+      {
+        "code": "BKSA67913",
+        "name": "AI리터러시",
+        "kind": "기초",
+        "credits": 2,
+        "area": "AI/데이터"
+      },
+      {
+        "code": "BKSA67914",
+        "name": "빅데이터의기초",
+        "kind": "기초",
+        "credits": 2,
+        "area": "AI/데이터"
+      },
+      {
+        "code": "BKSA67915",
+        "name": "프로그래밍의기초",
+        "kind": "기초",
+        "credits": 2,
+        "area": "AI/데이터"
+      },
+      {
+        "code": "BKSA67921",
+        "name": "예술로보는과학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "과학과기술"
+      },
+      {
+        "code": "BKSA68365",
+        "name": "로컬리티와인문학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA68366",
+        "name": "뇌과학여행",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA68806",
+        "name": "마음의성장과행복",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69146",
+        "name": "노코드시대의창작툴활용",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA69147",
+        "name": "퍼스널아이덴티티브랜딩",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA69148",
+        "name": "언어로체험하는세계문화",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69149",
+        "name": "충주의시간",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69150",
+        "name": "데이터인사이트",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA69151",
+        "name": "AI와함께하는사고와표현",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA69152",
+        "name": "금융시장과금융투자의이해",
+        "kind": "소양",
+        "credits": 2,
+        "area": "실무"
+      },
+      {
+        "code": "BKSA69153",
+        "name": "HASS실용영어",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA69154",
+        "name": "STEM실용영어",
+        "kind": "심화",
+        "credits": 2,
+        "area": "글로벌언어"
+      },
+      {
+        "code": "BKSA69471",
+        "name": "과학수사를통한진실발견",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA69739",
+        "name": "로컬스토리로기획하는다문화지역사회",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA69740",
+        "name": "의식주의지역인문학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA69741",
+        "name": "AI이해와문제해결",
+        "kind": "기초",
+        "credits": 2,
+        "area": "AI/데이터"
+      },
+      {
+        "code": "BKSA69743",
+        "name": "이야기로배우는인성과삶",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69744",
+        "name": "AI시대,성인을위한뇌과학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA69745",
+        "name": "와인과음악:감각과문화의인문학",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69747",
+        "name": "AI와법:알고리즘이 판결하는 세상",
+        "kind": "심화",
+        "credits": 2,
+        "area": "융복합"
+      },
+      {
+        "code": "BKSA69748",
+        "name": "AI시대문학읽기와쓰기",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA69749",
+        "name": "유학생의대학생활적응",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69750",
+        "name": "외국인유학생을위한생활예절",
+        "kind": "소양",
+        "credits": 2,
+        "area": "인성"
+      },
+      {
+        "code": "BKSA69751",
+        "name": "K유학생을위한한국기업문화",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA69752",
+        "name": "외국인을위한생활법률",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA69753",
+        "name": "건강한삶을위한미용관리",
+        "kind": "심화",
+        "credits": 2,
+        "area": "예술과체육"
+      },
+      {
+        "code": "BKSA69754",
+        "name": "외국인유학생을위한의사소통문화의이해",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과문화"
+      },
+      {
+        "code": "BKSA69755",
+        "name": "교류분석으로풀어보는소통과인간관계의심리학",
+        "kind": "심화",
+        "credits": 2,
+        "area": "인간과사회"
+      },
+      {
+        "code": "BKSA81308",
+        "name": "기초통계학",
+        "kind": "기초",
+        "credits": 2,
+        "area": "과학기초"
+      }
+    ]
+  }
+]

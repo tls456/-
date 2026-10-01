@@ -12,6 +12,7 @@ import { CoursesView } from './components/CoursesView';
 import { PlanView } from './components/PlanView';
 import { RulesView } from './components/RulesView';
 import { PersonalRequirements } from './components/PersonalRequirements';
+import { TranscriptImport } from './components/TranscriptImport';
 import { Badge, Modal, Notice } from './components/ui';
 
 type Page = 'dashboard' | 'courses' | 'plan' | 'rules';
@@ -29,6 +30,7 @@ export default function App() {
   const [state, setState] = useState<AppState | null>(restored.state);
   const [page, setPage] = useState<Page>('dashboard');
   const [editor, setEditor] = useState<Editor | null>(null);
+  const [importingPdf, setImportingPdf] = useState(false);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [academicDraft, setAcademicDraft] = useState<AppState['academic'] | null>(null);
   const [toast, setToast] = useState('');
@@ -135,7 +137,7 @@ export default function App() {
         {state.ruleVersion !== RULE_VERSION && <Notice>규칙 버전이 갱신되어 현재 입력으로 다시 계산했습니다. 적용 기준을 확인해 주세요.</Notice>}
         {!result.valid && <Notice tone="error"><strong>입력을 수정해야 계산할 수 있습니다.</strong><ul>{result.issues.map((issue, index) => <li key={`${issue.path}-${index}`}>{issue.message}</li>)}</ul></Notice>}
         {page === 'dashboard' && <><div className="page-intro"><div><span className="eyebrow">MY GRADUATION PLAN</span><h1>졸업까지, 한눈에.</h1><p>{profile.curriculumYear ?? '미확인'}학년도 · {profile.primary?.name ?? '학과 확인 필요'}{profile.secondary ? ` + ${profile.secondary.name}` : ''}</p></div><button className="button secondary" onClick={() => navigate('courses')}><BookOpen size={17}/>내 과목 관리</button></div>{valid ? <Dashboard result={valid} targetGpa={state.targetGpa} onTargetChange={targetGpa => update({ targetGpa })} onNavigate={navigate}/> : <button className="button primary" onClick={() => navigate('courses')}>입력 과목 확인하기</button>}</>}
-        {page === 'courses' && <CoursesView courses={state.courses} categories={profile.categories} result={valid} selectedIds={state.selectedCourseIds} onToggle={toggleDeletion} onAdd={() => setEditor({ type: 'course' })} onEdit={course => setEditor({ type: 'course', course })} onRemove={removeCourse} onClear={() => update({ selectedCourseIds: [] })}/>}
+        {page === 'courses' && <CoursesView courses={state.courses} categories={profile.categories} result={valid} selectedIds={state.selectedCourseIds} onToggle={toggleDeletion} onAdd={() => setEditor({ type: 'course' })} onImportPdf={() => setImportingPdf(true)} onEdit={course => setEditor({ type: 'course', course })} onRemove={removeCourse} onClear={() => update({ selectedCourseIds: [] })}/>}
         {page === 'plan' && <PlanView semesters={state.semesters} categories={profile.categories} goal={valid?.after.goal ?? null} onAddSemester={label => {
           if (state.semesters.length >= 30) { notify('한 계획에 최대 30개 학기까지 입력할 수 있습니다.'); return; }
           update({ semesters: [...state.semesters, { id: crypto.randomUUID(), label, courses: [], fixedTarget: null }] });
@@ -145,6 +147,10 @@ export default function App() {
       </main>
     </div>
     {editor && <CourseEditor course={editor.course} planned={editor.type === 'planned'} grades={GRADES} categories={profile.categories} catalog={profile.courseOptions} onSave={saveCourse} onClose={closeEditor}/>}
+    {importingPdf && <TranscriptImport profile={profile} existing={state.courses} onClose={() => setImportingPdf(false)} onApply={(courses, mode) => {
+      update({ courses: mode === 'replace' ? courses : [...state.courses, ...courses], selectedCourseIds: mode === 'replace' ? [] : state.selectedCourseIds, demo: false });
+      setImportingPdf(false); notify(`${courses.length}개 성적을 반영했습니다. 학적과 기준 취득학점은 적용 규칙에서 확인해 주세요.`);
+    }}/>}
     {academicDraft && <Modal title="학적·교육과정 수정" wide onClose={closeAcademic}><div className="stack"><AcademicForm value={academicDraft} onChange={setAcademicDraft}/><Notice>교육과정이 바뀌면 결과를 다시 계산합니다. 기존 과목은 새 기준에 맞는 이수구분인지 확인해 주세요.</Notice><div className="modal-actions"><button className="button secondary" onClick={closeAcademic}>취소</button><button className="button primary" onClick={() => {
       if (academicDraft.primaryDepartmentId !== 'computer' && academicDraft.secondaryDepartmentId !== 'computer') { notify('컴퓨터공학과가 포함된 조합을 선택해 주세요.'); return; }
       update({ academic: academicDraft, confirmedChecks: [] }); setAcademicDraft(null); notify('교육과정과 계산 결과를 갱신했습니다.');

@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Plus, Search, Pencil, Trash2, Undo2, Check } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2, Undo2, Check, FileUp } from 'lucide-react';
 import type { Course, ScenarioResult } from '../domain/types';
 import type { CategoryOption } from './CourseEditor';
 import { Badge, Empty, Notice } from './ui';
 
 type ValidResult = Extract<ScenarioResult, { valid: true }>;
-export function CoursesView({ courses, categories, result, selectedIds, onToggle, onAdd, onEdit, onRemove, onClear }: {
+export function CoursesView({ courses, categories, result, selectedIds, onToggle, onAdd, onImportPdf, onEdit, onRemove, onClear }: {
   courses: Course[]; categories: CategoryOption[]; result: ValidResult | null; selectedIds: string[];
-  onToggle: (id: string) => void; onAdd: () => void; onEdit: (course: Course) => void; onRemove: (course: Course) => void; onClear: () => void;
+  onToggle: (id: string) => void; onAdd: () => void; onImportPdf: () => void; onEdit: (course: Course) => void; onRemove: (course: Course) => void; onClear: () => void;
 }) {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('all');
@@ -16,7 +16,7 @@ export function CoursesView({ courses, categories, result, selectedIds, onToggle
   const visible = useMemo(() => courses.filter(course => `${course.name} ${course.courseCode ?? ''} ${course.semester}`.toLowerCase().includes(query.toLowerCase()) && (filter === 'all' || filter === 'selected' && selectedIds.includes(course.id) || filter === 'eligible' && eligibility.get(course.id)?.status === 'eligible')), [courses, query, filter, selectedIds, result]);
   const deletion = result?.deletion;
   return <div className="stack">
-    <div className="page-intro"><div><h1>이수 과목과 삭제 시뮬레이션</h1><p>지나온 기록은 그대로 두고, 다른 가능성을 비교해 보세요.</p></div><button className="button primary" onClick={onAdd}><Plus size={17}/>과목 추가</button></div>
+    <div className="page-intro"><div><h1>이수 과목과 삭제 시뮬레이션</h1><p>지나온 기록은 그대로 두고, 다른 가능성을 비교해 보세요.</p></div><div className="import-actions"><button className="button secondary" onClick={onImportPdf}><FileUp size={17}/>성적표 PDF 가져오기</button><button className="button primary" onClick={onAdd}><Plus size={17}/>과목 추가</button></div></div>
     {deletion && <div className="deletion-strip">
       <div><span>선택한 과목</span><strong>{selectedIds.length}<small>개</small></strong></div>
       <div><span>선택 과목 학점 수</span><strong>{deletion.selectedCourseCredits}</strong></div>

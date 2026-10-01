@@ -707,3 +707,9 @@ details li { color: #69775f; }
   .goal-feature { color: #263b32; background: #eef4e8; print-color-adjust: exact; }
   .table-scroll { overflow: visible; }
 }
+.import-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.import-summary { display: flex; flex-wrap: wrap; gap: 12px; }
+.import-rows { display: grid; gap: 16px; }
+.import-row { padding: 16px; border: 1px solid var(--border, #e1e8e2); border-radius: 12px; display: grid; gap: 12px; min-width: 0; }
+.import-row-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.transcript-import input[type="file"] { width: 100%; min-width: 0; }
