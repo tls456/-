@@ -62,7 +62,7 @@ export function Onboarding({ onStart, restoreError }: { onStart: (academic: Stud
   return <main className="welcome">
     <div className="welcome-university">KONKUK UNIVERSITY</div>
     <div className="welcome-art">
-      <a className="brand" href="#"><span className="brand-symbol"><GraduationCap size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
+      <a className="brand" href="#"><span className="brand-symbol"><GraduationCap size={25}/></span><span>학저모저모<small>학점에 관련된 이모저모</small></span></a>
       <div className="welcome-bull" aria-hidden="true"><img src={bullMark} alt=""/></div>
     </div>
     <div className="welcome-form">

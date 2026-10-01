@@ -2,7 +2,9 @@ import type { StudentAcademic } from './data/academic';
 import type { Course, Semester } from './domain/types';
 import { isPersonalRequirements, type PersonalRequirements } from './domain/personal';
 
-export const STORAGE_KEY = 'hakjeo-mujeomu:v1';
+export const STORAGE_KEY = 'hakjeo-mojeomo:v1';
+/** Read old records during the service rename; only the new key is used for new saves. */
+export const LEGACY_STORAGE_KEY = 'hakjeo-mujeomu:v1';
 export const RULE_VERSION = 'kku-2020-2026-checked-2026-10-02';
 
 export interface AppState {
@@ -70,7 +72,7 @@ export function parseSavedState(raw: string): AppState {
 
 export function loadState(): { state: AppState | null; error: string | null } {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_STORAGE_KEY);
     return { state: raw ? parseSavedState(raw) : null, error: null };
   } catch {
     return { state: null, error: '저장 데이터를 복원하지 못했습니다. 기존 저장본은 유지했습니다. 새로 시작하거나 백업 파일을 사용해 주세요.' };

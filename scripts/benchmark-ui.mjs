@@ -34,7 +34,7 @@ try {
       final = computed;
     }
     if (JSON.stringify(state) !== original) throw new Error('Simulation mutated its original input');
-    localStorage.setItem('hakjeo-mujeomu:v1', original);
+    localStorage.setItem('hakjeo-mojeomo:v1', original);
     return {
       records: state.courses.length,
       warmups: 5,

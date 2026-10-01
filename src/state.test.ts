@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createDemo } from './demo';
 import { simulate } from './domain/simulator';
 import { getPersonalContextKey } from './domain/personal';
-import { defaultAcademic, emptyState, loadState, parseSavedState, RULE_VERSION, STORAGE_KEY } from './state';
+import { defaultAcademic, emptyState, loadState, parseSavedState, RULE_VERSION, STORAGE_KEY, LEGACY_STORAGE_KEY } from './state';
 
 afterEach(() => { vi.unstubAllGlobals(); });
 
@@ -126,6 +126,23 @@ describe('입력 상태 저장·복원', () => {
     expect(storage.getItem).toHaveBeenCalledWith(STORAGE_KEY);
     expect(storage.setItem).not.toHaveBeenCalled();
     expect(storage.removeItem).not.toHaveBeenCalled();
+  });
+  it('서비스 이름 변경 전 저장 기록을 읽어 기존 과목과 계획을 유지한다', () => {
+    const state = createDemo();
+    const storage = { getItem: vi.fn((key: string) => key === LEGACY_STORAGE_KEY ? JSON.stringify(state) : null), setItem: vi.fn(), removeItem: vi.fn() };
+    vi.stubGlobal('localStorage', storage);
+    expect(loadState()).toEqual({ state, error: null });
+    expect(storage.getItem).toHaveBeenCalledWith(LEGACY_STORAGE_KEY);
+    expect(storage.setItem).not.toHaveBeenCalled();
+    expect(storage.removeItem).not.toHaveBeenCalled();
+  });
+  it('새 이름으로 저장한 기록이 있으면 이전 이름의 기록보다 우선한다', () => {
+    const state = createDemo();
+    state.targetGpa = 4;
+    const storage = { getItem: vi.fn((key: string) => JSON.stringify(key === STORAGE_KEY ? state : createDemo())) };
+    vi.stubGlobal('localStorage', storage);
+    expect(loadState().state?.targetGpa).toBe(4);
+    expect(storage.getItem).not.toHaveBeenCalledWith(LEGACY_STORAGE_KEY);
   });
 
   it.each(['malformed', 'unavailable'])('저장본 %s 오류를 보고하고 원본을 제거하지 않는다', failure => {

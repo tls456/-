@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { createDemo } from '../src/demo';
-import { STORAGE_KEY } from '../src/state';
+import { STORAGE_KEY, LEGACY_STORAGE_KEY } from '../src/state';
 
 async function openDemo(page: Page) {
   await page.addInitScript(({ key, saved }) => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(saved)); }, { key: STORAGE_KEY, saved: createDemo() });
@@ -10,6 +10,9 @@ async function openDemo(page: Page) {
 
 test('학번 입력 후 2020 교육과정에 매칭하고 전체 학번은 저장하지 않는다', async ({ page }) => {
   await page.goto('/');
+  await expect(page).toHaveTitle('학저모저모 · 학점에 관련된 이모저모');
+  await expect(page.locator('.welcome .brand')).toContainText('학저모저모');
+  await expect(page.locator('.welcome .brand small')).toHaveText('학점에 관련된 이모저모');
   await expect(page.getByRole('button', { name: /가상 성적으로 시연/ })).toHaveCount(0);
   await page.getByPlaceholder('예: 202312345').fill('201912345');
   await page.getByRole('button', { name: '교육과정 찾기' }).click();
@@ -19,9 +22,23 @@ test('학번 입력 후 2020 교육과정에 매칭하고 전체 학번은 저�
   await expect(page.getByText('2020학번은 당시 소프트웨어전공 교육과정에 매칭됩니다.')).toBeVisible();
   await page.getByRole('button', { name: '나의 졸업 계획 시작' }).click();
   await expect(page.getByRole('dialog', { name: '성적표 PDF 가져오기' })).toBeVisible();
-  const saved = await page.evaluate(() => localStorage.getItem('hakjeo-mujeomu:v1'));
+  const saved = await page.evaluate(() => localStorage.getItem('hakjeo-mojeomo:v1'));
   expect(saved).toContain('2020');
   expect(saved).not.toContain('202012345');
+});
+
+test('서비스 이름이 바뀌어도 이전 저장 기록을 새 키로 안전하게 이어서 사용한다', async ({ page }) => {
+  const state = createDemo();
+  state.selectedCourseIds = ['demo-failed'];
+  await page.addInitScript(({ key, saved }) => { if (!localStorage.getItem(key)) localStorage.setItem(key, JSON.stringify(saved)); }, { key: LEGACY_STORAGE_KEY, saved: state });
+  await page.goto('/');
+  await expect(page.locator('.sidebar .brand')).toContainText('학저모저모');
+  await expect(page.locator('.sidebar .brand small')).toHaveText('학점에 관련된 이모저모');
+  const migrated = await page.evaluate(({ current, legacy }) => ({ current: JSON.parse(localStorage.getItem(current)!), legacy: localStorage.getItem(legacy) }), { current: STORAGE_KEY, legacy: LEGACY_STORAGE_KEY });
+  expect(migrated.current.courses).toEqual(state.courses);
+  expect(migrated.current.semesters).toEqual(state.semesters);
+  expect(migrated.current.selectedCourseIds).toEqual(['demo-failed']);
+  expect(migrated.legacy).toBeNull();
 });
 
 test('가상 성적에서 F를 삭제 선택·해제하고 새로고침하면 계획을 복원한다', async ({ page }) => {
@@ -104,6 +121,6 @@ test('개인 확인자료를 적용·복원하고 교육과정 변경 시 이전
   await page.getByRole('button', { name: '적용하고 재계산' }).click();
   await expect(page.getByText('검증용 개인 필수', { exact: true })).toHaveCount(0);
   await expect(page.getByText(/개인 확인내용 미적용:/).first()).toBeVisible();
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!));
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mojeomo:v1')!));
   expect(saved.personalRequirements.requiredCourses[0].label).toBe('검증용 개인 필수');
 });

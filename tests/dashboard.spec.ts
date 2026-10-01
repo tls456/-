@@ -17,7 +17,7 @@ test('가상 시연 PDF를 직접 업로드하면 취득학점·등록학기가 
   await page.getByLabel('목표 최종 평균평점', { exact: true }).fill('3.5');
   await page.getByRole('button', { name: '필요한 평균평점 계산하기' }).click();
   await expect(page.getByRole('heading', { name: '졸업까지, 한눈에.' })).toBeVisible();
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!));
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mojeomo:v1')!));
   expect(saved.academic.baselineEarnedCredits).toBe(58);
   expect(saved.academic.registeredSemesters).toBe(4);
   expect(saved.semesters.map((s: { courses: { credits: number }[] }) => s.courses.reduce((sum, c) => sum + c.credits, 0))).toEqual([18, 18, 18, 18, 2]);
@@ -60,7 +60,7 @@ test('가상 시연 PDF를 직접 업로드하면 취득학점·등록학기가 
   await page.getByRole('button', { name: '나의 대시보드', exact: true }).click();
   await page.getByLabel('목표 최종 평균평점', { exact: true }).fill('3.5');
   await page.getByRole('button', { name: '적용', exact: true }).click();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!).semesters[0].courses[0].graded)).toBe(false);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mojeomo:v1')!).semesters[0].courses[0].graded)).toBe(false);
   await expect(range.getByRole('img')).toHaveAttribute('aria-label', `예상 누적 평균평점 범위 ${(earnedPoints / (weight + 71)).toFixed(2)}부터 ${((earnedPoints + 71 * 4.5) / (weight + 71)).toFixed(2)}, 목표 3.5`);
   await page.getByLabel('목표 최종 평균평점', { exact: true }).fill('4.5');
   await page.getByRole('button', { name: '적용', exact: true }).click();

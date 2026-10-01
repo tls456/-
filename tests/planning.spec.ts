@@ -34,6 +34,6 @@ for (const action of ['pass-only', 'remove'] as const) {
     expect(saved.semesters[0].courses).toHaveLength(action === 'remove' ? 0 : 1);
     await page.getByRole('button', { name: '나의 대시보드', exact: true }).click();
     await expect(page.getByRole('heading', { name: '졸업까지, 한눈에.' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: '평점 목표', exact: true })).toBeVisible();
+    await expect(page.getByRole('region', { name: '평점 목표', exact: true })).toBeVisible();
   });
 }

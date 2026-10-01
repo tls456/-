@@ -19,7 +19,7 @@ test('동일 학기 자료가 있는 가상 PDF는 확인 없이 자동 분류�
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect(apply).toBeEnabled();
   await apply.click();
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!));
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mojeomo:v1')!));
   expect(saved.courses).toHaveLength(3);
   expect(saved.academic.registeredSemesters).toBe(4);
   expect(saved.courses[0].categoryId).toBe('ge-advanced-science');
@@ -35,7 +35,7 @@ test('동일 학기 자료가 있는 가상 PDF는 확인 없이 자동 분류�
   await expect(apply).toBeDisabled();
   await page.getByRole('checkbox', { name: /기존 이수 과목 3개와 삭제 선택을 교체/ }).check();
   await apply.click();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!).courses.length)).toBe(3);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mojeomo:v1')!).courses.length)).toBe(3);
 });
 
 test('시간표가 없는 학기는 여전히 후보 확인 후에만 반영한다', async ({ page }) => {
@@ -51,16 +51,16 @@ test('시간표가 없는 학기는 여전히 후보 확인 후에만 반영한�
   await page.getByRole('checkbox', { name: /아래 다른 학기 시간표 후보 1개의 영역을 모두 검토/ }).check();
   await expect(apply).toBeEnabled();
   await apply.click();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!).courses.length)).toBe(3);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mojeomo:v1')!).courses.length)).toBe(3);
 });
 
 test('잘못된 PDF는 입력을 변경하지 않고 오류를 보여 준다', async ({ page }) => {
   await page.addInitScript(({ key, saved }) => localStorage.setItem(key, JSON.stringify(saved)), { key: STORAGE_KEY, saved: createDemo() });
   await page.goto('/');
   await page.getByRole('button', { name: '이수 과목 · 삭제', exact: true }).click();
-  const before = await page.evaluate(() => localStorage.getItem('hakjeo-mujeomu:v1'));
+  const before = await page.evaluate(() => localStorage.getItem('hakjeo-mojeomo:v1'));
   await page.getByRole('button', { name: '성적표 PDF 가져오기' }).click();
   await page.getByLabel('성적표 PDF', { exact: true }).setInputFiles({ name: 'broken.pdf', mimeType: 'application/pdf', buffer: Buffer.from('Not a PDF') });
   await expect(page.getByRole('alert')).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem('hakjeo-mujeomu:v1'))).toBe(before);
+  expect(await page.evaluate(() => localStorage.getItem('hakjeo-mojeomo:v1'))).toBe(before);
 });

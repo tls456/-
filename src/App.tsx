@@ -4,7 +4,7 @@ import { GRADES } from './data/academic';
 import { simulate } from './domain/simulator';
 import type { Course, PlannedCourse, Semester } from './domain/types';
 import { createDemo } from './demo';
-import { emptyState, loadState, parseSavedState, RULE_VERSION, STORAGE_KEY, type AppState } from './state';
+import { emptyState, loadState, parseSavedState, RULE_VERSION, STORAGE_KEY, LEGACY_STORAGE_KEY, type AppState } from './state';
 import { Onboarding, AcademicForm } from './components/AcademicForm';
 import { CourseEditor } from './components/CourseEditor';
 import { Dashboard } from './components/Dashboard';
@@ -62,8 +62,8 @@ export default function App() {
   useEffect(() => {
     if (!state) return;
     try {
-      if (state.saveEnabled) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); setSaved(true); }
-      else { localStorage.removeItem(STORAGE_KEY); setSaved(false); }
+      if (state.saveEnabled) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); localStorage.removeItem(LEGACY_STORAGE_KEY); setSaved(true); }
+      else { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LEGACY_STORAGE_KEY); setSaved(false); }
       setSaveError('');
     } catch { setSaved(false); setSaveError('브라우저 저장 공간에 기록하지 못했습니다. 설정에서 JSON 백업을 내려받아 주세요.'); }
   }, [state]);
@@ -75,14 +75,14 @@ export default function App() {
   }
   function reset() {
     setConfirmation({ title: '저장한 계획을 초기화할까요?', body: '이 브라우저에 저장한 과목, 규칙 선택, 목표와 학기 계획을 모두 제거합니다. 내려받은 JSON 백업 파일은 유지됩니다.', label: '전체 초기화', action: () => {
-      try { localStorage.removeItem(STORAGE_KEY); } catch { notify('브라우저 저장본을 지우지 못했습니다. 브라우저 사이트 데이터 설정을 확인해 주세요.'); return; }
+      try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LEGACY_STORAGE_KEY); } catch { notify('브라우저 저장본을 지우지 못했습니다. 브라우저 사이트 데이터 설정을 확인해 주세요.'); return; }
       setState(null); setSetupStep(null); setConfirmation(null); setPage('dashboard'); setSaved(false); setSidebarOpen(false);
     } });
   }
   function exportState() {
     if (!state) return;
     const url = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }));
-    const anchor = document.createElement('a'); anchor.href = url; anchor.download = `학저무저무-${new Date().toISOString().slice(0, 10)}.json`; anchor.click();
+    const anchor = document.createElement('a'); anchor.href = url; anchor.download = `학저모저모-${new Date().toISOString().slice(0, 10)}.json`; anchor.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000); notify('계획 백업을 내려받았습니다. 성적 정보가 포함되어 있으니 개인 공간에 보관해 주세요.');
   }
   async function importState(file: File) {
@@ -136,7 +136,7 @@ export default function App() {
   return <div className="app-shell">
     {sidebarOpen && <button className="sidebar-backdrop" aria-label="메뉴 닫기" onClick={() => setSidebarOpen(false)}/>}
     <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`}>
-      <a className="brand" href="#" onClick={event => { event.preventDefault(); navigate('dashboard'); }}><span className="brand-symbol"><GraduationCap size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
+      <a className="brand" href="#" onClick={event => { event.preventDefault(); navigate('dashboard'); }}><span className="brand-symbol"><GraduationCap size={25}/></span><span>학저모저모<small>학점에 관련된 이모저모</small></span></a>
       <div className="campus-label">KONKUK GLOCAL<span>컴퓨터공학과 졸업 플래너</span></div>
       <nav className="nav-items" aria-label="주 메뉴">{navItems.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} onClick={() => navigate(item.id)} aria-current={page === item.id ? 'page' : undefined}><item.icon size={19}/><span>{item.label}</span>{page === item.id && <span className="nav-dot"/>}</button>)}</nav>
       <section className="sidebar-note sidebar-summary" aria-label="실시간 졸업 요약" aria-live="polite" aria-atomic="true">
@@ -150,7 +150,7 @@ export default function App() {
       <div className="sidebar-bottom"><div className="local-status"><HardDrive size={16}/><span>{saved ? '이 브라우저에 저장됨' : state.saveEnabled ? '저장 상태 확인 필요' : '자동 저장 꺼짐'}<small>다른 기기와 동기화되지 않아요</small></span></div><button onClick={() => navigate('rules')} className="button subtle"><CircleHelp size={15}/>적용 기준과 출처 보기</button></div>
     </aside>
     <div className="main-shell">
-      <header className="topbar"><div className="breadcrumb"><button className="icon-button mobile-menu" aria-label="메뉴 열기" onClick={() => setSidebarOpen(true)}><Menu size={21}/></button><span>나의 졸업 설계</span><ChevronRight size={14}/><strong>{currentTitle}</strong></div><div className="topbar-actions"><Badge tone="green">{state.academic.entryYear}학번</Badge><button className="avatar-button" title="학적 정보 수정" aria-label="학적 정보 수정" onClick={() => setAcademicDraft({ ...state.academic })}>KU</button></div></header>
+      <header className="topbar"><div className="breadcrumb"><button className="icon-button mobile-menu" aria-label="메뉴 열기" onClick={() => setSidebarOpen(true)}><Menu size={21}/></button><span>학점에 관련된 이모저모</span><ChevronRight size={14}/><strong>{currentTitle}</strong></div><div className="topbar-actions"><Badge tone="green">{state.academic.entryYear}학번</Badge><button className="avatar-button" title="학적 정보 수정" aria-label="학적 정보 수정" onClick={() => setAcademicDraft({ ...state.academic })}>KU</button></div></header>
       <main className="main-content">
         {setupStep && <StartFlow step={setupStep} remainingCredits={valid?.after.currentGraduation.total?.missing ?? null} onUpload={() => setImportingPdf(true)} onTarget={applyTarget}/>}
         {state.demo && <div className="demo-banner"><span><Play size={15}/><strong>시연 모드</strong> 가상 성적과 수강계획입니다.</span><button onClick={reset}>내 기록으로 시작<ArrowUpRight size={14}/></button></div>}
@@ -167,7 +167,7 @@ export default function App() {
         }} onRemoveSemester={removeSemester} onUpdateSemester={semester => update({ semesters: state.semesters.map(item => item.id === semester.id ? semester : item) })} onAddCourse={semesterId => setEditor({ type: 'planned', semesterId })} onEditCourse={(semesterId, course) => setEditor({ type: 'planned', semesterId, course })} onRemoveCourse={(semesterId, course) => setConfirmation({ title: '계획 과목을 제거할까요?', body: `‘${course.name}’을 미래 수강계획에서 제거합니다.`, label: '계획 과목 제거', action: () => { update({ semesters: state.semesters.map(semester => semester.id === semesterId ? { ...semester, courses: semester.courses.filter(item => item.id !== course.id) } : semester) }); setConfirmation(null); } })}/>}
         {page === 'rules' && <div className="stack"><Notice>편입·전과·복수전공의 학교 확인자료가 있다면 <a href="#personal-requirements">개인별 요건 입력</a>에서 필수 과목과 인정 기준을 보완할 수 있습니다.</Notice><RulesView state={state} profile={profile} policy={policy} onUpdate={update} onEditAcademic={() => setAcademicDraft({ ...state.academic })} onExport={exportState} onImport={importState} onReset={reset} onDemo={demo}/><div id="personal-requirements"><PersonalRequirements academic={state.academic} profile={officialProfile} value={state.personalRequirements} onChange={personalRequirements => update({ personalRequirements })}/></div></div>}
         </div>
-        <footer className="app-footer"><span><GraduationCap size={13}/>학저무저무</span><p>입력한 과목·학점 요건에 대한 시뮬레이션입니다. 실제 학점포기 신청이나 학교의 최종 졸업 판정은 변경하지 않습니다.</p><span>공식 자료 확인일 2026.10.02</span></footer>
+        <footer className="app-footer"><span><GraduationCap size={13}/>학저모저모</span><p>입력한 과목·학점 요건에 대한 시뮬레이션입니다. 실제 학점포기 신청이나 학교의 최종 졸업 판정은 변경하지 않습니다.</p><span>공식 자료 확인일 2026.10.02</span></footer>
       </main>
     </div>
     {editor && <CourseEditor course={editor.course} planned={editor.type === 'planned'} grades={GRADES} categories={profile.categories} catalog={profile.courseOptions} onSave={saveCourse} onClose={closeEditor}/>}
