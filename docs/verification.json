@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-02T01:27:32+09:00",
+  "ruleVersion": "kku-2020-2026-checked-2026-10-02",
+  "build": { "command": "pnpm build", "passed": true, "typeCheck": true },
+  "unitAndIntegration": { "command": "pnpm test", "files": 8, "tests": 164, "passed": 164, "durationSeconds": 1.68 },
+  "browser": {
+    "command": "pnpm test:e2e",
+    "tests": 8,
+    "passed": 8,
+    "durationSeconds": 14.9,
+    "covered": [
+      "2020 cohort matching and full student ID not persisted",
+      "F-course deletion toggle, undo, and refresh restoration",
+      "course create, edit, and remove separate from simulated withdrawal",
+      "semester target lock/unlock and semester creation",
+      "390px dashboard, plan, and course layout without document overflow",
+      "personal requirements apply, restore, and suspend after curriculum change",
+      "unlock after the final GPA course becomes pass/fail",
+      "unlock after the final GPA course is removed"
+    ]
+  },
+  "performance": {
+    "fixtureCourses": 200,
+    "warmupRuns": 5,
+    "measurementRuns": 20,
+    "targetMaximumMs": 1000,
+    "fullSimulation": { "averageMs": 5.27, "maximumMs": 10.70 },
+    "reactRender": { "averageMs": 171.50, "maximumMs": 326.70 },
+    "deletionSearch": { "candidates": 200, "candidateChargeCredits": 425, "policyCreditLimit": 326, "algorithmPath": "0/1 combination search, not all-candidates fast path" },
+    "uiMeasurement": "DOM checkbox click through React update and two requestAnimationFrame callbacks; frame scheduling included, Playwright transport excluded",
+    "reproduce": "Start Vite on 127.0.0.1:5173, then pnpm benchmark",
+    "passed": true
+  },
+  "environment": {
+    "node": "22.22.1",
+    "chromium": "153.0.8010.12",
+    "os": "Ubuntu 26.04 / WSL2 Linux 6.18.33.2",
+    "cpu": "AMD Ryzen AI 5 435",
+    "logicalCpus": 12,
+    "memoryGiB": 7.34,
+    "viewport": { "desktop": [1440, 1000], "mobile": [390, 844] },
+    "mode": "Vite development server, headless Chromium",
+    "note": "Missing browser shared libraries and Korean fonts were loaded from temporary user-space Ubuntu package extracts; no system package installation was required."
+  },
+  "visual": { "screens": 7, "pageErrors": 0, "documentOverflow": false, "artifacts": "docs/screenshots/", "data": "fictional demo grades only" },
+  "sourceData": {
+    "curriculumRows": 225,
+    "requiredCourseEntries": 1657,
+    "selectionGroups": 11,
+    "creditSumMatches": 224,
+    "documentedConflict": "2020 fashion design: overview 2 required credits versus department curriculum 14; remains unverified",
+    "reviewMethod": "All seven overview tables and computer/major exception tables visually checked; other course entries validated through official PDF text extraction, department mapping, credit sums, duplicate checks, and source-page references.",
+    "schoolCertified": false
+  }
+}
