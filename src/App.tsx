@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Sprout, LayoutDashboard, BookOpen, CalendarDays, Settings2, ArrowUpRight, ChevronRight, Menu, X, HardDrive, Check, Play, RotateCcw, CircleHelp } from 'lucide-react';
+import { GraduationCap, LayoutDashboard, BookOpen, CalendarDays, Settings2, ArrowUpRight, ChevronRight, Menu, X, HardDrive, Check, Play, RotateCcw, CircleHelp } from 'lucide-react';
 import { GRADES } from './data/academic';
 import { simulate } from './domain/simulator';
 import type { Course, PlannedCourse, Semester } from './domain/types';
@@ -136,7 +136,7 @@ export default function App() {
   return <div className="app-shell">
     {sidebarOpen && <button className="sidebar-backdrop" aria-label="메뉴 닫기" onClick={() => setSidebarOpen(false)}/>}
     <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`}>
-      <a className="brand" href="#" onClick={event => { event.preventDefault(); navigate('dashboard'); }}><span className="brand-symbol"><Sprout size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
+      <a className="brand" href="#" onClick={event => { event.preventDefault(); navigate('dashboard'); }}><span className="brand-symbol"><GraduationCap size={25}/></span><span>학저무저무<small>나의 졸업 설계</small></span></a>
       <div className="campus-label">KONKUK GLOCAL<span>컴퓨터공학과 졸업 플래너</span></div>
       <nav className="nav-items" aria-label="주 메뉴">{navItems.map(item => <button key={item.id} className={`nav-item ${page === item.id ? 'active' : ''}`} onClick={() => navigate(item.id)} aria-current={page === item.id ? 'page' : undefined}><item.icon size={19}/><span>{item.label}</span>{page === item.id && <span className="nav-dot"/>}</button>)}</nav>
       <section className="sidebar-note sidebar-summary" aria-label="실시간 졸업 요약" aria-live="polite" aria-atomic="true">
@@ -167,7 +167,7 @@ export default function App() {
         }} onRemoveSemester={removeSemester} onUpdateSemester={semester => update({ semesters: state.semesters.map(item => item.id === semester.id ? semester : item) })} onAddCourse={semesterId => setEditor({ type: 'planned', semesterId })} onEditCourse={(semesterId, course) => setEditor({ type: 'planned', semesterId, course })} onRemoveCourse={(semesterId, course) => setConfirmation({ title: '계획 과목을 제거할까요?', body: `‘${course.name}’을 미래 수강계획에서 제거합니다.`, label: '계획 과목 제거', action: () => { update({ semesters: state.semesters.map(semester => semester.id === semesterId ? { ...semester, courses: semester.courses.filter(item => item.id !== course.id) } : semester) }); setConfirmation(null); } })}/>}
         {page === 'rules' && <div className="stack"><Notice>편입·전과·복수전공의 학교 확인자료가 있다면 <a href="#personal-requirements">개인별 요건 입력</a>에서 필수 과목과 인정 기준을 보완할 수 있습니다.</Notice><RulesView state={state} profile={profile} policy={policy} onUpdate={update} onEditAcademic={() => setAcademicDraft({ ...state.academic })} onExport={exportState} onImport={importState} onReset={reset} onDemo={demo}/><div id="personal-requirements"><PersonalRequirements academic={state.academic} profile={officialProfile} value={state.personalRequirements} onChange={personalRequirements => update({ personalRequirements })}/></div></div>}
         </div>
-        <footer className="app-footer"><span><Sprout size={13}/>학저무저무</span><p>입력한 과목·학점 요건에 대한 시뮬레이션입니다. 실제 학점포기 신청이나 학교의 최종 졸업 판정은 변경하지 않습니다.</p><span>공식 자료 확인일 2026.10.02</span></footer>
+        <footer className="app-footer"><span><GraduationCap size={13}/>학저무저무</span><p>입력한 과목·학점 요건에 대한 시뮬레이션입니다. 실제 학점포기 신청이나 학교의 최종 졸업 판정은 변경하지 않습니다.</p><span>공식 자료 확인일 2026.10.02</span></footer>
       </main>
     </div>
     {editor && <CourseEditor course={editor.course} planned={editor.type === 'planned'} grades={GRADES} categories={profile.categories} catalog={profile.courseOptions} onSave={saveCourse} onClose={closeEditor}/>}
