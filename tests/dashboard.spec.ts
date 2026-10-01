@@ -62,6 +62,16 @@ test('가상 시연 PDF를 직접 업로드하면 취득학점·등록학기가 
   await page.getByRole('button', { name: '적용', exact: true }).click();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('hakjeo-mujeomu:v1')!).semesters[0].courses[0].graded)).toBe(false);
   await expect(range.getByRole('img')).toHaveAttribute('aria-label', `예상 누적 평균평점 범위 ${(earnedPoints / (weight + 71)).toFixed(2)}부터 ${((earnedPoints + 71 * 4.5) / (weight + 71)).toFixed(2)}, 목표 3.5`);
+  await page.getByLabel('목표 최종 평균평점', { exact: true }).fill('4.5');
+  await page.getByRole('button', { name: '적용', exact: true }).click();
+  const impossibleBadge = page.locator('.action-metric > .badge');
+  await expect(impossibleBadge).toHaveText('현재 계획으로 목표 달성 불가');
+  for (const width of [1280, 1201, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await expect(impossibleBadge).toHaveCSS('font-size', '10px');
+    await expect(impossibleBadge).toHaveCSS('white-space', 'nowrap');
+    expect(await impossibleBadge.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
+  }
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });

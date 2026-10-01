@@ -805,6 +805,7 @@ details li { color: #69775f; }
 .dashboard-simple .action-metric { align-content: start; gap: 16px; }
 .dashboard-simple .action-metric > span { font-size: 18px; font-weight: 600; line-height: 1.5; }
 .dashboard-simple .action-metric > span svg { flex-shrink: 0; width: 20px; height: 20px; }
+.dashboard-simple .action-metric > .badge { font-size: 10px; line-height: 1.5; white-space: nowrap; padding: 4px 6px; color: #ac4940; }
 .dashboard-summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 22px; }
 .dashboard-summary-grid > *, .dashboard-summary-right > * { min-width: 0; }
 .dashboard-summary-right { gap: 22px; }
@@ -821,5 +822,5 @@ details li { color: #69775f; }
 }
 @media (max-width: 640px) {
   .dashboard-simple .next-action-grid { grid-template-columns: minmax(0, 1fr); }
-  .dashboard-simple .action-metric > span { font-size: 17px; }
+  .dashboard-simple .action-metric > span:not(.badge) { font-size: 17px; }
 }
