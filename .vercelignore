@@ -1,0 +1,9 @@
+docs/
+tests/
+scripts/
+playwright-report/
+test-results/
+**/__pycache__/
+*.tsbuildinfo
+.env
+.env.*

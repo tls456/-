@@ -1,0 +1,31 @@
+{
+  "fictional": true,
+  "pageErrors": [],
+  "courses": 27,
+  "earnedCredits": 58,
+  "registeredSemesters": 4,
+  "semesters": [
+    {
+      "label": "2026-2",
+      "credits": 18
+    },
+    {
+      "label": "2027-1",
+      "credits": 18
+    },
+    {
+      "label": "2027-2",
+      "credits": 18
+    },
+    {
+      "label": "2028-1",
+      "credits": 18
+    },
+    {
+      "label": "2028-2",
+      "credits": 2
+    }
+  ],
+  "failedCourse": "[가상] 디지털논리회로",
+  "comparison": "삭제 전후 비교\n삭제 과목 선택\n선택한 학점포기 전후의 현재 평점과 남은 졸업학점\n항목\t삭제 전\t삭제 반영 후\n현재 평균평점\t3.18\t3.36\n졸업까지 남은 이수 학점\t74학점\t74학점"
+}
